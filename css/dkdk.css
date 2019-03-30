@@ -125,7 +125,7 @@ a:focus {
   padding: 100px 0;
   text-align: center;
   color: white;
-  background: url('../../img/devdkdk.jpg') no-repeat bottom center scroll;
+  background: url('../imgs/devdkdk.jpg') no-repeat bottom center scroll;
   background-color: black;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -231,7 +231,7 @@ a:focus {
   padding: 100px 0;
   text-align: center;
   color: white;
-  background: url('../../img/demo-image-02.jpg') no-repeat bottom center scroll;
+  background: url('../imgs/demo-image-02.jpg') no-repeat bottom center scroll;
   background-color: black;
   -webkit-background-size: cover;
   -moz-background-size: cover;
