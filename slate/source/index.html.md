@@ -10,7 +10,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
 
 toc_footers:
   - <div class="fb-like" data-href="https://www.facebook.com/dkdkheart" data-width="100" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="false"></div>
-  - <a href='https://top.dkdk.io/dev/'>DKDK 개발자홈</a>
+  - <a href='https://dev.dkdk.io/'>DKDK 개발자홈</a>
   - <a href='https://facebook.com/dkdkheart'>DKDK 페이스북</a>
   - <a href='https://dkdk.io/'>DKDK 홈</a>
   - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
@@ -66,7 +66,7 @@ Open API를 사용하는 두번째 예제 입니다.
 DKDK Open API는 DKDK 개발자 Token을 파라메터로 입력해야 사용하실 수 있습니다.
 아래 경로에서 먼저 개발자Token을 발급 받으세요.
 
-[DKDK 개발자Token 발급](https://top.dkdk.io/dev).
+[DKDK 개발자Token 발급](https://dev.dkdk.io/).
 
 발급받은 Token의 사용방법은 각 Open API의 설명을 참고해 주세요.
 
@@ -736,7 +736,7 @@ response.raise_for_status()
 dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
 user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
 action | 'patternupload'를 입력합니다.
-pattern | 진동패턴 배열을 입력합니다.(배열)('https://developer.android.com/reference/android/os/Vibrator.html'의 내용 참조)
+pattern | 진동패턴 배열을 입력합니다.(배열)('<a href="https://developer.android.com/reference/android/os/Vibrator.html" target=_new>https://developer.android.com/reference/android/os/Vibrator.html</a>'의 내용 참조)
 pattern_name | 패턴의 이름을 입력합니다.
 
 
