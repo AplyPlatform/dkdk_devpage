@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-130136264-5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-130136264-5');
+  </script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="두근두근(DKDK) 하트 센터">
+    <meta name="author" content="APLY Inc.">
+    <link rel="shortcut icon" type="image/x-icon" href="https://top.dkdk.io/shortcut.ico" />
+    <link rel="icon" type="image/png" href="https://top.dkdk.io/dkdk200.png" />
+    <link rel="apple-touch-icon" href="https://top.dkdk.io/dkdk200.png" />
+
+    <title>두근두근 하트센터</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="./vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="./dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="./vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
+    <link href="./css/bootstrap-social.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+    <script src='https://www.google.com/recaptcha/api.js?render=6Lcpj4kUAAAAAPlT2X6WdKo7XcbmHQt8WiY3rAX4'></script>
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+</head>
+
+<body id='logincenter'>
+	<div class="container">
+        <div id="loading">
+              <div class="loader"></div>
+        </div>
+  			<div class="row">
+  					<div class="col-md-4 col-md-offset-4">
+  							<div class="login-panel panel panel-default loginforms">
+  									<div class="panel-heading">
+  											<h2>두근두근 개발자 센터 가입하기</h2>
+  									</div>
+                    <div id="show_1">
+                        <div class="panel-body">
+                            <h4>하기의 "개인정보취급방침"의 내용에 동의하시면 아래 "동의합니다"버튼을 클릭해 주세요.</h2>
+                        </div>
+      									<div class="panel-body">
+                              <a class="btn btn-primary btn-lg active" role="button" onClick="onAgree()">동의합니다</a>
+                              <a href="index.html" class="btn btn-primary btn-lg active" role="button">돌아가기</a>
+      									</div>
+                        <div class="panel-heading">
+                            <a href="https://blog.dkdk.io/13" target=_new><h4>개인정보취급방침 보기</h4></a>
+                        </div>
+                    </div>
+
+                    <div id="show_2">
+                        <div class="panel-body">
+                          <input name="dkdk_name" id="dkdk_name" type="text" class="form-control" value="" placeholder="이름을 입력해 주세요." required=""><br>
+                          <input name="dkdk_email" id="dkdk_email" type="email" class="form-control" value="" placeholder="이메일 주소를 입력해 주세요." required=""><br>
+                          <input name="dkdk_phonenumber" id="dkdk_phonenumber" type="text" class="form-control" value="" placeholder="전화번호를 입력해 주세요. ex)+8201012341234" required="">
+                        </div>
+                      <div class="panel-body">
+                        <a class="btn btn-primary btn-lg active" role="button" onClick="requestRegister()">가입하기</a>
+                        <a href="index.html" class="btn btn-primary btn-lg active" role="button">돌아가기</a>
+                      </div>
+                    </div>
+
+  							</div>
+
+  					</div>
+  			</div>
+	</div>
+  <!-- Footer-->
+        <footer class="footer">
+            <div class="footer-bar">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-6">
+                            <div class="copyright">
+                                <p>© 2019 <a href="https://aply.biz/">APLY</a> All Rights Reserved.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+  <script src="./vendor/jquery/jquery.min.js"></script>
+
+  <!-- Bootstrap Core JavaScript -->
+  <script src="./vendor/bootstrap/js/bootstrap.min.js"></script>
+
+  <!-- Metis Menu Plugin JavaScript -->
+  <script src="./vendor/metisMenu/metisMenu.min.js"></script>
+
+  <!-- Custom Theme JavaScript -->
+  <script src="./dist/js/sb-admin-2.js"></script>
+  <script src="./js/reg.js"></script>
+</body>
+</html>
