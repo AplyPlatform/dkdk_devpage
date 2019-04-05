@@ -57,7 +57,8 @@ function requestRegister() {
               ajaxRequest(data, function(r) {
                       hideLoader();
                       if(r.result == "success") {
-                          window.location.href = "./center.html";
+			  alert("축하드립니다, 성공적으로 가입되었습니다!");
+                          window.location.href = "./index.html";
                       }
                       else {
                           alert("잘못된 정보입니다.");
