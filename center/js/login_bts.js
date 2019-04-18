@@ -35,7 +35,7 @@ function naverinit() {
   var naverLogin = new naver.LoginWithNaverId(
       {
         clientId: "5SEPqM8g94jKlpGeUAep",
-        callbackUrl: "https://dkdk.io/dkdkdevcenter/navercallback.html",
+        callbackUrl: "https://dev.dkdk.io/center/navercallback.html",
         isPopup: false,
         loginButton: {color: "green", type: 3, height: 35}
       }
