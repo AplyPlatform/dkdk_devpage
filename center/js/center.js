@@ -16,6 +16,24 @@ function requestDeviceRegister() {
   var device_id = $('#device_id').val();
   var device_kind = $('#device_kind').val();
   var version = $('#version').val();
+
+  if (user_nickname == "") {
+	alert("device 이름을 입력해 주세요");
+	return;
+  }
+
+  if (devce_id == "") {
+	alert("디바이스 아이디를 입력해 주세요");
+	return;
+  }
+
+
+  if (version == "") {
+	alert("디바이스의 version을 입력해 주세요");
+	return;
+  }
+
+
   var jdata = {"daction": "device_register",
     "version" : version,
     "device_kind" : device_kind,
