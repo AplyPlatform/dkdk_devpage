@@ -51,6 +51,7 @@ function checkLoginStatus() {
   var dev_user_id = getCookie("dev_user_id");
   if (isSet(dev_user_id) == true) {
     location.href="center.html";
+    return;
   }
 
   setCookie("dev_user_id", "", -1);
