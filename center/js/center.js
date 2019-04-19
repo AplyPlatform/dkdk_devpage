@@ -23,7 +23,7 @@ function requestDeviceRegister() {
 	return;
   }
 
-  if (devce_id == "") {
+  if (device_id == "") {
 	alert("신호를 받을 디바이스의 아이디 또는 주소를 입력해 주세요");
       	hideLoader();
 	return;
