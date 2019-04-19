@@ -17,6 +17,6 @@ function doVib(pattern_id) {
 
         var pattern = patternArray[pattern_id-1];
 
-        pattern.shift(); //두근두근앱에서 제작한 진동일 경우는 배열의 첫번째 아이템을 삭제합니다
+        //pattern.shift(); //두근두근앱에서 제작한 진동일 경우는 배열의 첫번째 아이템을 삭제합니다
         navigator.vibrate(pattern);
 }
