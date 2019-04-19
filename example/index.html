@@ -89,7 +89,7 @@
                 <ul class="nav navbar-nav">
                     <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
                     <li class="hidden">
-                        <a href="#page-top"></a>
+                        <a href="#page-top">홈</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="../index.html#about">소개</a>
@@ -98,8 +98,12 @@
                         <a class="page-scroll" href="../index.html#download">토큰발급</a>
                     </li>
 
-                    <li>
-                        <a class="page-scroll" href="index.html">개발예제코드</a>
+                    <li class="dropdown show">
+                        <a class="page-scroll" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">개발예제코드</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                          <li class="dropdown-item"><a href="#example1"><font size=2 color=black>- 웹브라우저에서 진동패턴 울리기</font></a></li>
+                          <li class="dropdown-item"><a href="#example2"><font size=2 color=black>- Cordova에서 진동패턴 울리기 (IOS용)</font></a></li>
+                        </ul>
                     </li>
 
                     <li>
