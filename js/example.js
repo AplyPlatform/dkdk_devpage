@@ -7,12 +7,13 @@ function doVib(pattern_id) {
 
         var hasVib = "vibrate" in navigator || "mozVibrate" in navigator;
 
-        if (hasVib && !("vibrate" in navigator))
-          navigator.vibrate = navigator.mozVibrate;
-        else {
+        if (hasVib == false){
           alert("진동기능을 지원하지 않는 환경입니다.");
           return;
         }
+
+        if (!("vibrate" in navigator))
+          navigator.vibrate = navigator.mozVibrate;
 
         var pattern = patternArray[pattern_id-1];
 
