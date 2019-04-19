@@ -748,16 +748,6 @@ pattern_name | 패턴의 이름을 입력합니다.
 예제:
 `[100,200,100,300,10,500]`
 
-Cordova나 웹, 웹뷰등에서 Javascript를 통해 진동을 표현할 경우, 패턴의 순서에 유의해 주세요.
-즉, '두근거림 패턴 가져오기' API를 이용해서 패턴을 내려 받았을 경우, Javascript에서 진동을 표현하기 위해서는 패턴의 첫번째 아이템을 삭제한 후 사용하면 됩니다.
-
-예제:
-`var pattern = downloaded_pattern.shift();`
-
-<a href=https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-vibration/ target=new>Cordova vibration plugin</a>링크를 참고해 주세요.
-
-
-
 
 ## 두근거림 패턴 가져오기
 
@@ -891,13 +881,21 @@ pattern_name | 두근거림 패턴의 이름
 예제:
 `[100,200,100,300,10,500]`
 
-Cordova나 웹, 웹뷰등에서 Javascript를 통해 진동을 표현할 경우, 패턴의 순서에 유의해 주세요.
+웹브라우저와 웹뷰등에서 Javascript를 통해 진동을 표현할 경우, 패턴의 순서에 유의해 주세요.
 즉, '두근거림 패턴 가져오기' API를 이용해서 패턴을 내려 받았을 경우, Javascript에서 진동을 표현하기 위해서는 패턴의 첫번째 아이템을 삭제한 후 사용하면 됩니다.
 
 예제:
 `var pattern = downloaded_pattern.shift();`
 
-<a href=https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-vibration/ target=new>Cordova vibration plugin</a>링크를 참고해 주세요.
+
+웹브라우저, 웹뷰에서 두근거림 패턴을 사용하는 방법은 아래의 경로를 참고해 주세요.
+
+- <a href=https://dev.dkdk.io/example/index.html#example1 target=new>https://dev.dkdk.io/example/index.html#example1</a>
+
+
+iOS의 Cordova 환경에서 두근거림 패턴을 사용하는 방법은 아래의 경로를 참고해 주세요.
+
+- <a href=https://dev.dkdk.io/example/index.html#example2 target=new>https://dev.dkdk.io/example/index.html#example2</a>
 
 
 ## 두근거림 패턴 삭제하기
