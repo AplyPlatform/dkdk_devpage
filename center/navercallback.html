@@ -31,10 +31,10 @@
 		if (naver_id_login.oauthParams.access_token == "") {
 			alert("죄송합니다, 오류가 발생하였습니다.");
 			location.href="index.html";
-			return;
 		}
-
-		naverSignInCallback(naver_id_login.oauthParams.access_token);
+		else {
+			naverSignInCallback(naver_id_login.oauthParams.access_token);
+		}
 	</script>
 </body>
 
