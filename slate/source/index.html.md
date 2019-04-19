@@ -29,7 +29,7 @@ search: true
 인터넷이 지원되는 디바이스에서 친구나 지인의 두근두근 앱으로 두근거림을 보내거나 받을 수 있는 방법을 설명합니다.
 
 <img src="../imgs/dkdk_open_api.png" class="imgstyle">
-                
+
 Open API를 사용하는 첫번째 예제 입니다.
 내가 만든 어떤 특별한 장치에서 친구의 스마트폰에 있는 두근두근으로 두근거림을 보낼 수 있습니다.
 
@@ -736,8 +736,27 @@ response.raise_for_status()
 dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
 user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
 action | 'patternupload'를 입력합니다.
-pattern | 진동패턴 배열을 입력합니다.(배열)('<a href="https://developer.android.com/reference/android/os/Vibrator.html" target=_new>https://developer.android.com/reference/android/os/Vibrator.html</a>'의 내용 참조)
+pattern | 진동패턴 배열을 입력합니다.(배열 하기의 '참고'의 내용을 참고해주세요)
 pattern_name | 패턴의 이름을 입력합니다.
+
+
+### 참고
+진동패턴의 모습은 아래와 같습니다.
+
+`[대기시간,진동시간,대기시간,진동시간, ...]`
+
+예제:
+`[100,200,100,300,10,500]`
+
+Cordova나 웹, 웹뷰등에서 Javascript를 통해 진동을 표현할 경우, 패턴의 순서에 유의해 주세요.
+즉, '두근거림 패턴 가져오기' API를 이용해서 패턴을 내려 받았을 경우, Javascript에서 진동을 표현하기 위해서는 패턴의 첫번째 아이템을 삭제한 후 사용하면 됩니다.
+
+예제:
+`var pattern = downloaded_pattern.shift();`
+
+<a href=https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-vibration/ target=new>Cordova vibration plugin</a>링크를 참고해 주세요.
+
+
 
 
 ## 두근거림 패턴 가져오기
