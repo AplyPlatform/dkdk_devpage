@@ -291,7 +291,7 @@ response.raise_for_status()
 파라메터 | 설명
 --------- | -----------
 dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
-action | 'accept'을 입력합니다.
+action | 'accept'를 입력합니다.
 user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
 friend_uuid | 친구요청 전송에 성공했을때 수신한 friend_uuid를 입력합니다.
 
@@ -399,7 +399,7 @@ response.raise_for_status()
 --------- | -----------
 dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
 user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
-action | 'bye'을 입력합니다.
+action | 'bye'를 입력합니다.
 friend_uuid | 친구요청 전송에 성공했을때 수신한 user_uuid를 입력합니다.
 
 
@@ -622,7 +622,7 @@ response.raise_for_status()
 --------- | -----------
 dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
 user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
-action | 'up' 입력합니다.
+action | 'up'을 입력합니다.
 friend_uuids | 두근거림을 전송하던 친구들의 user_uuid (배열)
 
 
@@ -859,7 +859,7 @@ response.raise_for_status()
 --------- | -----------
 dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
 user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
-action | 'pattern' 입력합니다.
+action | 'pattern'을 입력합니다.
 friend_uuid | 두근거림 패턴을 가지고 있는 친구의 user_uuid
 pattern_uuid | 내려받을 두근거림 패턴의 pattern_uuid
 
@@ -1003,7 +1003,7 @@ response.raise_for_status()
 --------- | -----------
 dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
 user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
-action | 'patternremove' 입력합니다.
+action | 'patternremove'를 입력합니다.
 pattern_uuid | 삭제할 두근거림 패턴의 pattern_uuid
 
 
