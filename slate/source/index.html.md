@@ -178,8 +178,8 @@ response.raise_for_status()
 
 파라메터 | 설명
 --------- | -----------
-dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
-user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
+dkdk-token | 개발자 Token 값을 헤더에 입력합니다.
+user_uuid | <a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.
 action | 'request'를 입력합니다.
 friend_nickname | 친구요청을 전송할 대상의 닉네임을 입력합니다.
 
@@ -290,9 +290,9 @@ response.raise_for_status()
 
 파라메터 | 설명
 --------- | -----------
-dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
+dkdk-token | 개발자 Token 값을 헤더에 입력합니다.
 action | 'accept'를 입력합니다.
-user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
+user_uuid | <a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.
 friend_uuid | 친구요청 전송에 성공했을때 수신한 friend_uuid를 입력합니다.
 
 ## 친구와 헤어지기
@@ -397,10 +397,10 @@ response.raise_for_status()
 
 파라메터 | 설명
 --------- | -----------
-dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
-user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
+dkdk-token | 개발자 Token 값을 헤더에 입력합니다.
+user_uuid | <a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.
 action | 'bye'를 입력합니다.
-friend_uuid | 친구요청 전송에 성공했을때 수신한 user_uuid를 입력합니다.
+friend_uuid | 친구요청 전송에 성공했을때 수신한 friend_uuid 값을 입력합니다.
 
 
 #두근거림 보내고 받기
@@ -510,11 +510,11 @@ response.raise_for_status()
 
 파라메터 | 설명
 --------- | -----------
-dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
-user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
+dkdk-token | 개발자 Token 값을 헤더에 입력합니다.
+user_uuid | <a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.
 action | 'touch'를 입력합니다.
 friend_uuids | 두근거림을 전송할 친구의 user_uuid를 입력합니다. (배열)
-pattern_uuid | 두근거림의 패턴 pattern_uuid를 입력합니다.(두근거림 패턴 등록하기 참고) (Optional)
+pattern_uuid | 두근거림의 패턴 pattern_uuid를 입력합니다. 입력하지 않으면 기본 패턴이 전송됩니다. (두근거림 패턴 등록하기 참고) (Optional)
 
 
 ## 두근거림 전송을 중지하기
@@ -620,10 +620,10 @@ response.raise_for_status()
 
 파라메터 | 설명
 --------- | -----------
-dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
-user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
+dkdk-token | 개발자 Token 값을 헤더에 입력합니다.
+user_uuid | <a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.
 action | 'up'을 입력합니다.
-friend_uuids | 두근거림을 전송하던 친구들의 user_uuid (배열)
+friend_uuids | 두근거림을 전송하던 친구들의 user_uuid 목록(배열)
 
 
 #두근거림 패턴 등록/받기/삭제
@@ -733,10 +733,10 @@ response.raise_for_status()
 
 파라메터 | 설명
 --------- | -----------
-dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
-user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
+dkdk-token | 개발자 Token 값을 헤더에 입력합니다.
+user_uuid | <a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.
 action | 'patternupload'를 입력합니다.
-pattern | 진동패턴 배열을 입력합니다.(배열 하기의 '참고'의 내용을 참고해주세요)
+pattern | 진동패턴 값을 입력합니다.(배열 / 하기'참고'의 내용을 참고해주세요)
 pattern_name | 패턴의 이름을 입력합니다.
 
 
@@ -857,8 +857,8 @@ response.raise_for_status()
 
 파라메터 | 설명
 --------- | -----------
-dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
-user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
+dkdk-token | 개발자 Token 값을 헤더에 입력합니다.
+user_uuid | <a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.
 action | 'pattern'을 입력합니다.
 friend_uuid | 두근거림 패턴을 가지고 있는 친구의 user_uuid
 pattern_uuid | 내려받을 두근거림 패턴의 pattern_uuid
@@ -1001,8 +1001,8 @@ response.raise_for_status()
 
 파라메터 | 설명
 --------- | -----------
-dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
-user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
+dkdk-token | 개발자 Token 값을 헤더에 입력합니다.
+user_uuid | <a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.
 action | 'patternremove'를 입력합니다.
 pattern_uuid | 삭제할 두근거림 패턴의 pattern_uuid
 
@@ -1132,8 +1132,8 @@ response.raise_for_status()
 
 파라메터 | 설명
 --------- | -----------
-dkdk-token | 부여받은 개발자 Token값을 헤더에 입력합니다.
-user_uuid | 개발자 등록시 부여받은 user_uuid를 입력합니다.
+dkdk-token | 개발자 Token 값을 헤더에 입력합니다.
+user_uuid | <a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.
 action | 'history'를 입력합니다.
 friend_uuid | 친구의 user_uuid를 입력합니다.
 
@@ -1200,7 +1200,7 @@ Connection: close
 --------- | -----------
 mstate | 'request'
 mfrom | 친구의 닉네임
-muuid | 친구의 USER_UUID
+muuid | 친구의 user_uuid
 curdate | 친구요청 송신 시각
 
 ### 친구요청 수신 데이터 (TIZEN, HTTP SERVER)
@@ -1209,7 +1209,7 @@ curdate | 친구요청 송신 시각
 --------- | -----------
 state | 'request'
 from | 친구의 닉네임
-fromid | 친구의 USER_UUID
+fromid | 친구의 user_uuid
 curdate | 친구요청 송신 시각
 
 
@@ -1266,9 +1266,9 @@ Connection: close
 파라메터 | 설명
 --------- | -----------
 mstate | 'touch'
-mfrom | 친구의 USER_UUID
+mfrom | 친구의 user_uuid
 mid | 친구의 닉네임
-muuid | 친구의 USER_UUID
+muuid | 친구의 user_uuid
 pattern_uuid | 친구의 패턴 UUID
 curdate | 하트터치 송신 시각
 
@@ -1278,8 +1278,8 @@ curdate | 하트터치 송신 시각
 --------- | -----------
 state | 'touch'
 from | 친구의 닉네임
-fromid | 친구의 USER_UUID
-pattern_uuid | 친구의 패턴 UUID
+fromid | 친구의 user_uuid
+pattern_uuid | 친구의 패턴 uuid
 curdate | 하트터치 송신 시각
 
 
@@ -1335,7 +1335,7 @@ Connection: close
 --------- | -----------
 mstate | 'up'
 mfrom | 터치부터 터치업까지의 두근거림 수
-muuid | 친구의 USER_UUID
+muuid | 친구의 user_uuid
 curdate | 신호 송신 시각
 
 ### 하트터치업 수신 데이터 (TIZEN, HTTP SERVER)
@@ -1344,5 +1344,5 @@ curdate | 신호 송신 시각
 --------- | -----------
 state | 'up'
 from | 터치부터 터치업까지의 두근거림 수
-fromid | 친구의 USER_UUID
+fromid | 친구의 user_uuid
 curdate | 신호 송신 시각
