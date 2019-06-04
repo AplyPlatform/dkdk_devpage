@@ -111,6 +111,7 @@
                         <li><a class="dropdown-item" href="#example1"><font color="black">두근두근의 블루투스 연결기능 개발 기록</font></a></li>
       									<li><a class="dropdown-item" href="#example2"><font color="black">웹브라우저에서 두근거림 패턴 진동시키기</font></a></li>
       									<li><a class="dropdown-item" href="#example3"><font color="black">Cordova에서 두근거림 패턴 진동시키기(IOS용)</font></a></li>
+                        <li><a class=""
       								</ul>
       							</li>
 
@@ -140,7 +141,7 @@
     <section id="example1" class="container content-section">
           <div class="row">
               <div class="col-lg-8 col-lg-offset-2">
-                <h3>1. 두근두근앱이 라즈베리파이를 두근거리도록 개발한 기록</h3>
+                <h3>두근두근앱이 라즈베리파이를 두근거리도록 개발한 기록</h3>
                 <p>두근두근에 블루투스 연결 기능을 넣고 라즈베리파이를 제어하도록 개발한 기록입니다.<br>
                     - <a href="http://airpage.org/xe/project_data/27780" target=_new>라즈베리파이에서 소형 진동모터를 제어하는 방법</a><br>
           			    - <a href="http://airpage.org/xe/project_data/27840" target=_new>라즈베리파이에서 BLE를 동작시키고 다른 다비이스에서 검색되도록 하는 방법</a><br>
@@ -291,12 +292,36 @@
 
 
     </section>
+    <!-- example1 -->
+    <section id="example_etc" class="container content-section">
+          <div class="row">
+              <div class="col-lg-8 col-lg-offset-2">
+                <h3>그외 예제</h3>
+                <p>- <a href="http://airpage.org/xe/language_data/28323" target=_new>아두이노에서 두근두근 API를 호출하는 방법</a></p>
+              </div>
+          </div>
+    </section>
 
     <!-- Contact Section -->
     <section id="contact" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
-                <h2><img src=../imgs/logo_text.png width=80> 개발자 문의하기</h2>
+                <h2><img src=../imgs/logo_text.png width=80> 개발 관련 문의하기</h2><br>
+                <iframe id="forum_embed"
+                  src="javascript:void(0)"
+                  scrolling="no"
+                  frameborder="0"
+                  width="100%"
+                  height="700">
+                </iframe>
+                <script type="text/javascript">
+                  document.getElementById('forum_embed').src =
+                     'https://groups.google.com/forum/embed/?place=forum/dkdk_dev_aply'
+                     + '&showsearch=true&showpopout=true&showtabs=false'
+                     + '&parenturl=' + encodeURIComponent(window.location.href);
+                </script>
+                <br>
+                <br>
                 <p>간단한 인사부터 개발에 관한 아이디어나 문제점에 대해<BR>의견을 보내주세요. 언제나 환영입니다!</p>
                 <p><a href="mailto:dkdk@aply.biz">dkdk@aply.biz</a>
                 </p>
