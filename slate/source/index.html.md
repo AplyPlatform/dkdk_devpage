@@ -10,7 +10,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
 
 toc_footers:
   - <div class="fb-like" data-href="https://www.facebook.com/dkdkheart" data-width="100" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="false"></div>
-  - <a href='https://dev.dkdk.io/'>DKDK 개발자홈</a>
+  - <a href='https://dev.dkdk.io'>DKDK 개발자홈</a>
   - <a href='https://groups.google.com/forum/#!forum/dkdk_dev_aply'>두근두근 API 문의</a>
   - <a href='https://facebook.com/dkdkheart'>DKDK 페이스북</a>
   - <a href='https://dkdk.io/'>DKDK 홈</a>
