@@ -19,6 +19,7 @@ function requestUserRemove() {
 	   return;
   }
 
+  var r = confirm("정말로 " + user_nickname + " 사용자를 삭제하시겠습니까?");
   var jdata = {"daction": "admin_user_remove",
     "user_nickname" : user_nickname,
     "emailid" : emailid,
