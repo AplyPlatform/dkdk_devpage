@@ -7,6 +7,39 @@ function logOut() {
   location.href="index.html";
 }
 
+function requestUserRemove() {
+  showLoader();
+  var token = getCookie("user_token");
+  var emailid = getCookie("dev_user_id");
+  var user_nickname = $('#user_nickname').val();
+
+  if (user_nickname == "") {
+	   alert("사용자의 이름을 입력해 주세요");
+     hideLoader();
+	   return;
+  }
+
+  var jdata = {"daction": "admin_user_remove",
+    "user_nickname" : user_nickname,
+    "emailid" : emailid,
+    "token" : token,
+    "action" : "developer"
+  };
+
+  ajaxRequest(jdata, function (r) {
+    if(r.result == "success") {
+      alert(user_nickname + " 사용자를 삭제하였습니다.");
+      $('#user_nickname').val("");
+    }else {
+      hideLoader();
+      alert("사용자 삭제에 실패하였습니다. " + r.reason);
+    }
+  }, function(request, status, error) {
+    hideLoader();
+    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+  });
+}
+
 function requestDeviceRegister() {
   showLoader();
   var token = getCookie("user_token");

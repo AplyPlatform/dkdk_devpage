@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-130136264-5"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'UA-130136264-5');
+</script>
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="두근두근(DKDK) 개발자 센터(ADMIN)">
+    <meta name="author" content="APLY Inc.">
+    <!-- Favicons-->
+	  <link rel="shortcut icon" href="https://top.dkdk.io/favicon.png">
+	  <link rel="apple-touch-icon" href="https://top.dkdk.io/apple-touch-icon.png">
+	  <link rel="apple-touch-icon" sizes="72x72" href="https://top.dkdk.io/apple-touch-icon-72x72.png">
+	  <link rel="apple-touch-icon" sizes="114x114" href="https://top.dkdk.io/apple-touch-icon-114x114.png">
+
+    <title>두근두근 개발자 센터 - DKDK(ADMIN)</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="./vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="./dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="./vendor/morrisjs/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="./vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/ol.css" type="text/css">
+    <link href="css/bootstrap-social.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+</head>
+
+<body>
+  <div id="fb-root"></div>
+  <script>
+  (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v2.11&appId=570867566598427&autoLogAppEvents=1';
+      fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+  </script>
+  <div id="fb-root"></div>
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="center.html"><img src=./imgs/logo_text.png width=40> 개발자 센터 <i>beta</i></a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                      <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="#"><i class="fa fa-user fa-fw"></i> <span id=socialid_field></span></a>
+                      </li>
+                      <li class="divider"></li>
+                      <li><a href="#"><i class="fa fa-gear fa-fw"></i> Token <input name="dkdktoken_view" id="dkdktoken_view" type="text" class="form-control" value=""></a>
+                      </li>
+                      <li class="divider"></li>
+                      <li><a href="javascript:logOut();"><i class="fa fa-sign-out fa-fw"></i> 로그아웃</a>
+                      </li>
+                  </ul>
+                  <!-- /.dropdown-user -->
+                </li>
+            </ul>
+
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="center.html"><i class="glyphicon glyphicon-equalizer"></i> 디바이스 관리</a>
+                            <br><br><br>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                              <a href="https://dev.dkdk.io/apis" target="_new">DKDK Open APIs</a>
+                              <a href="https://dev.dkdk.io/" target="_new">개발자 사이트</a>
+                              <a href="https://groups.google.com/forum/#!forum/dkdk_dev_aply" target="_new">두근두근 API 문의</a>
+                              <a href="https://top.dkdk.io" target="_new">두근두근 홈</a>
+                              <a href="https://www.facebook.com/dkdkheart" target="_new">페이스북 커뮤니티</a>
+                              <a href="https://blog.dkdk.io" target="_new">블로그</a>
+                        </li>
+
+                        <li>
+                            <a href="http://aply.biz" target="_new">
+                                <div>
+                                    <strong>© 2019 APLY Inc.</strong>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="loading">
+              <div class="loader"></div>
+        </div>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div><br></div>
+                    <div class="panel panel-default loginforms">
+                      <div class="panel-body">
+                        <h3>두근두근 사용자 관리자 (Admin)</h3>
+			<p>A D M I N. P A G E</p>
+                      </div>
+                    </div>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            사용자 관리
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body" id="deviceRmForm">
+                            <div>
+                              <label for="user_nickname">사용자의 닉네임</label>
+                              <input name="user_nickname" id="user_nickname" type="text" class="form-control" value="" placeholder="디바이스 이름을 입력해 주세요. ex) dkdk1004" required=""><br>
+                            </div>
+
+                            <div>
+                              <a class="btn btn-primary btn-lg active" role="button" onClick="requestDeviceRemove()">삭제하기</a>
+                              <hr size=1 color=#555>
+                            </div>
+                        </div>
+
+                        <div class="panel-body" id="selDeviceBody">
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-6 -->
+
+            </div>
+            <!-- /.row -->
+        </div>
+
+    </div>
+    <!-- /#wrapper -->
+    <script src="./js/ol.js"></script>
+
+    <!-- jQuery -->
+    <script src="./vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="./vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="./vendor/metisMenu/metisMenu.min.js"></script>
+
+    <script src="./vendor/raphael/raphael.min.js"></script>
+    <script src="./vendor/morrisjs/morris.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="./dist/js/sb-admin-2.js"></script>
+    <script src="./js/center.js"></script>
+
+</body>
+
+</html>
