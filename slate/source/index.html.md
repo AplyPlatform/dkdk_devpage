@@ -627,6 +627,114 @@ action | 'up'을 입력합니다.
 friend_uuids | 두근거림을 전송하던 친구들의 user_uuid 목록(배열)
 
 
+# 두근거림 보낼 대상 선택/해제
+
+## 보낼 대상 선택/해제하기
+
+```shell
+
+curl -H "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"action":"target_friend", "user_uuid" : "MY_UUID", "friend_uuid" : "FRIEND_UUID", "target" : true}' https://api.dkdk.io/v2/dkdk
+
+```
+
+```php
+
+$body['action'] = 'target_friend';
+$body['user_uuid'] = 'MY_UUID';
+$body['friend_uuid'] = "FRIEND_UUID";
+$body['target'] = true;
+
+$headers = array(
+        'Content-Type: application/json',
+        'dkdk-token: DKDKTOKEN'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+
+```
+
+```javascript
+
+var jdata = {"action":"target_friend", "user_uuid" : "MY_UUID", "friend_uuid" : "FRIEND_UUID", "target" : true};
+
+$.ajax({url : "https://api.dkdk.io/v2/dkdk",
+       dataType : "json",
+       contentType : "application/json",
+       crossDomain: true,
+       cache : false,
+       data : JSON.stringify(jdata),
+       type : "POST",
+       async: false,
+       beforeSend: function(request) {
+          request.setRequestHeader("dkdk-token", "DKDKTOKEN");
+        },
+       success : function(r) {
+         console.log(JSON.stringify(r));
+         if(r.result == "success") {
+           alert("Successfully, recorded.");
+         }
+       },
+       error:function(request,status,error){
+           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       }
+});
+
+```
+
+```python
+
+import requests
+headers = {
+    'Content-Type': 'application/json',
+    'dkdk-token' : 'DKDKTOKEN'
+}
+data = {
+    "action":"target_friend", "user_uuid" : "MY_UUID", "friend_uuid" : "FRIEND_UUID", "target" : true
+}
+url = 'https://api.dkdk.io/v2/dkdk'
+response = requests.post(url, headers=headers,
+                         data=json.dumps(data))
+response.raise_for_status()
+'response.json()
+
+```
+
+> 상기의 API는 친구요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
+
+```json
+  {
+    "result": "success"
+  }
+```
+
+두근거림을 보낼 친구를 선택 또는 해제 합니다.
+
+### HTTP 요청
+
+`POST https://api.dkdk.io/v2/dkdk`
+
+### URL 파라메터
+
+파라메터 | 설명
+--------- | -----------
+dkdk-token | 개발자 Token 값을 헤더에 입력합니다.
+user_uuid | <a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.
+action | 'target_friend'를 입력합니다.
+friend_uuid | 두근거림을 보낼 친구의 user_uuid 값을 입력합니다.
+target | 보낼 대상으로 선택하면 true, 그렇지 않으면 false를 입력합니다.
+
 #두근거림 패턴 등록/받기/삭제
 
 ## 두근거림 패턴 등록하기
@@ -1148,6 +1256,137 @@ recvdata | 받은 두근거림 수 정보가 담긴 배열
 count | 두근거림 수
 time | 두근거림을 보내거나 받은 시각
 
+#AI 기능
+## 얼굴표정 분석 요청
+
+```shell
+
+curl -H "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"action":"get_face_emotion", "user_uuid":"USER_UUID",  "language":"LANGUAGE", "imageData" : "BASE64_ENCODED_IMAGE"}' https://api.dkdk.io/v2/dkdk
+
+```
+
+```php
+
+$body['action'] = 'get_face_emotion';
+$body['user_uuid'] = 'USER_UUID';
+$body['imageData'] = 'MY BASE64_ENCODED_IMAGE NAME';
+$body['language'] = 'LANGUAGE';
+
+$headers = array(
+        'Content-Type: application/json',
+        'dkdk-token: DKDKTOKEN'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+
+```
+
+```javascript
+
+var jdata = {"action":"get_face_emotion", "user_uuid":"USER_UUID",  "language":"LANGUAGE", "imageData" : "BASE64_ENCODED_IMAGE"};
+
+$.ajax({url : "https://api.dkdk.io/v2/dkdk",
+       dataType : "json",
+       contentType : "application/json",
+       crossDomain: true,
+       cache : false,
+       data : JSON.stringify(jdata),
+       type : "POST",
+       async: false,
+       beforeSend: function(request) {
+          request.setRequestHeader("dkdk-token", "DKDKTOKEN");
+        },
+       success : function(r) {
+         console.log(JSON.stringify(r));
+         if(r.result == "success") {
+           //r.data;
+         }
+       },
+       error:function(request,status,error){
+           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       }
+});
+
+```
+
+```python
+
+import requests
+headers = {
+    'Content-Type': 'application/json',
+    'dkdk-token' : 'DKDKTOKEN'
+}
+data = {
+    "action":"get_face_emotion", "user_uuid":"USER_UUID",  "language":"LANGUAGE", "imageData" : "BASE64_ENCODED_IMAGE"
+}
+
+url = 'https://api.dkdk.io/v2/dkdk'
+response = requests.post(url, headers=headers,
+                         data=json.dumps(data))
+response.raise_for_status()
+'response.json()
+
+```
+
+> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
+
+```json
+  {
+    "result":"success",
+    "response" : [
+      {
+        "exp" : "행복해 보여요",
+        "emotion" : "happy",
+        "val" : 0.8
+      },
+      {
+        "exp" : "슬픈가 보다",
+        "emotion" : "sad",
+        "val" : 0.5
+      },
+      {
+        "exp" : "화가났냐?",
+        "emotion" : "angry",
+        "val" : 0.2
+      }
+    ],
+    "emotion" : "happy"
+  }
+
+  //실패시 (감정분석 실패)
+  {
+    "result":"failed",
+    "emotion" : "none"
+  }
+```
+
+얼굴 이미지를 전송하여 분석한 감정 상태 값을 받습니다
+
+### HTTP 요청
+
+`POST https://api.dkdk.io/v2/dkdk`
+
+### URL 파라메터
+
+파라메터 | 설명
+--------- | -----------
+dkdk-token | 개발자 Token 값을 헤더에 입력합니다.
+user_uuid | <a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.
+action | 'get_face_emotion'를 입력합니다.
+imageData | Base64로 인코딩된 이미지(JPG) 데이터
+language | 사용자 디바이스의 언어값 (ISO 639 aplha-2 또는 aplha-3 코드 - 한국어: ko, 영어: en, 일어: ja, ...)
 
 
 #친구 요청/터치/터치업 신호받기

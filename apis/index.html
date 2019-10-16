@@ -290,6 +290,14 @@
               </ul>
           </li>
           <li>
+            <a href="#6ecfa546a2" class="toc-h1 toc-link" data-title="">두근거림 보낼 대상 선택/해제</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#6882f8d413" class="toc-h2 toc-link" data-title="">보낼 대상 선택/해제하기</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#895733135b" class="toc-h1 toc-link" data-title="">두근거림 패턴 등록/받기/삭제</a>
               <ul class="toc-list-h2">
                   <li>
@@ -308,6 +316,14 @@
               <ul class="toc-list-h2">
                   <li>
                     <a href="#df2ddf5da3" class="toc-h2 toc-link" data-title="">주고받은 두근거림(하트)수 받아오기</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#ai" class="toc-h1 toc-link" data-title="ai">AI 기능</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#16cb2e87c5" class="toc-h2 toc-link" data-title="">얼굴표정 분석 요청</a>
                   </li>
               </ul>
           </li>
@@ -915,6 +931,113 @@ echo $response;
 <td>두근거림을 전송하던 친구들의 user_uuid 목록(배열)</td>
 </tr>
 </tbody></table>
+<h1 id='6ecfa546a2'>두근거림 보낼 대상 선택/해제</h1><h2 id='6882f8d413'>보낼 대상 선택/해제하기</h2><pre class="highlight shell tab-shell"><code>
+curl -H <span class="s2">"dkdk-token: DKDKTOKEN"</span> -H <span class="s2">"Content-type: application/json"</span> -X POST -d <span class="s1">'{"action":"target_friend", "user_uuid" : "MY_UUID", "friend_uuid" : "FRIEND_UUID", "target" : true}'</span> https://api.dkdk.io/v2/dkdk
+
+</code></pre><pre class="highlight php tab-php"><code>
+$body['action'] = 'target_friend';
+$body['user_uuid'] = 'MY_UUID';
+$body['friend_uuid'] = "FRIEND_UUID";
+$body['target'] = true;
+
+$headers = array(
+        'Content-Type: application/json',
+        'dkdk-token: DKDKTOKEN'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+
+</code></pre><pre class="highlight javascript tab-javascript"><code>
+<span class="kd">var</span> <span class="nx">jdata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"action"</span><span class="p">:</span><span class="s2">"target_friend"</span><span class="p">,</span> <span class="s2">"user_uuid"</span> <span class="p">:</span> <span class="s2">"MY_UUID"</span><span class="p">,</span> <span class="s2">"friend_uuid"</span> <span class="p">:</span> <span class="s2">"FRIEND_UUID"</span><span class="p">,</span> <span class="s2">"target"</span> <span class="p">:</span> <span class="kc">true</span><span class="p">};</span>
+
+<span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span><span class="na">url</span> <span class="p">:</span> <span class="s2">"https://api.dkdk.io/v2/dkdk"</span><span class="p">,</span>
+       <span class="na">dataType</span> <span class="p">:</span> <span class="s2">"json"</span><span class="p">,</span>
+       <span class="na">contentType</span> <span class="p">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
+       <span class="na">crossDomain</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+       <span class="na">cache</span> <span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+       <span class="na">data</span> <span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">jdata</span><span class="p">),</span>
+       <span class="na">type</span> <span class="p">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+       <span class="na">async</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+       <span class="na">beforeSend</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">request</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s2">"dkdk-token"</span><span class="p">,</span> <span class="s2">"DKDKTOKEN"</span><span class="p">);</span>
+        <span class="p">},</span>
+       <span class="na">success</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r</span><span class="p">));</span>
+         <span class="k">if</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">result</span> <span class="o">==</span> <span class="s2">"success"</span><span class="p">)</span> <span class="p">{</span>
+           <span class="nx">alert</span><span class="p">(</span><span class="s2">"Successfully, recorded."</span><span class="p">);</span>
+         <span class="p">}</span>
+       <span class="p">},</span>
+       <span class="na">error</span><span class="p">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span><span class="nx">status</span><span class="p">,</span><span class="nx">error</span><span class="p">){</span>
+           <span class="nx">alert</span><span class="p">(</span><span class="s2">"code:"</span><span class="o">+</span><span class="nx">request</span><span class="p">.</span><span class="nx">status</span><span class="o">+</span><span class="s2">"\n"</span><span class="o">+</span><span class="s2">"message:"</span><span class="o">+</span><span class="nx">request</span><span class="p">.</span><span class="nx">responseText</span><span class="o">+</span><span class="s2">"\n"</span><span class="o">+</span><span class="s2">"error:"</span><span class="o">+</span><span class="nx">error</span><span class="p">);</span>
+       <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre><pre class="highlight python tab-python"><code>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">,</span>
+    <span class="s">'dkdk-token'</span> <span class="p">:</span> <span class="s">'DKDKTOKEN'</span>
+<span class="p">}</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"action"</span><span class="p">:</span><span class="s">"target_friend"</span><span class="p">,</span> <span class="s">"user_uuid"</span> <span class="p">:</span> <span class="s">"MY_UUID"</span><span class="p">,</span> <span class="s">"friend_uuid"</span> <span class="p">:</span> <span class="s">"FRIEND_UUID"</span><span class="p">,</span> <span class="s">"target"</span> <span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s">'https://api.dkdk.io/v2/dkdk'</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                         <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="s">'response.json()</span><span class="err">
+
+</span></code></pre>
+<blockquote>
+<p>상기의 API는 친구요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"result"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>두근거림을 보낼 친구를 선택 또는 해제 합니다.</p>
+<h3 id='http-6'>HTTP 요청</h3>
+<p><code>POST https://api.dkdk.io/v2/dkdk</code></p>
+<h3 id='url-6'>URL 파라메터</h3>
+<table><thead>
+<tr>
+<th>파라메터</th>
+<th>설명</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>dkdk-token</td>
+<td>개발자 Token 값을 헤더에 입력합니다.</td>
+</tr>
+<tr>
+<td>user_uuid</td>
+<td><a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.</td>
+</tr>
+<tr>
+<td>action</td>
+<td>&#39;target_friend&#39;를 입력합니다.</td>
+</tr>
+<tr>
+<td>friend_uuid</td>
+<td>두근거림을 보낼 친구의 user_uuid 값을 입력합니다.</td>
+</tr>
+<tr>
+<td>target</td>
+<td>보낼 대상으로 선택하면 true, 그렇지 않으면 false를 입력합니다.</td>
+</tr>
+</tbody></table>
 <h1 id='895733135b'>두근거림 패턴 등록/받기/삭제</h1><h2 id='5d0726fbbc'>두근거림 패턴 등록하기</h2><pre class="highlight shell tab-shell"><code>
 curl -H <span class="s2">"dkdk-token: DKDKTOKEN"</span> -H <span class="s2">"Content-type: application/json"</span> -X POST -d <span class="s1">'{"user_uuid":"USER_UUID", "action":"patternupload", "pattern":[0,100,5,100], "pattern_name" : "MY PATTERN NAME"}'</span> https://api.dkdk.io/v2/dkdk
 
@@ -996,9 +1119,9 @@ echo $response;
   </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>나의 두근거림 패턴을 등록합니다.</p>
-<h3 id='http-6'>HTTP 요청</h3>
+<h3 id='http-7'>HTTP 요청</h3>
 <p><code>POST https://api.dkdk.io/v2/dkdk</code></p>
-<h3 id='url-6'>URL 파라메터</h3>
+<h3 id='url-7'>URL 파라메터</h3>
 <table><thead>
 <tr>
 <th>파라메터</th>
@@ -1117,9 +1240,9 @@ echo $response;
   </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>친구의 두근거림 패턴을 내려 받습니다.</p>
-<h3 id='http-7'>HTTP 요청</h3>
+<h3 id='http-8'>HTTP 요청</h3>
 <p><code>POST https://api.dkdk.io/v2/dkdk</code></p>
-<h3 id='url-7'>URL 파라메터</h3>
+<h3 id='url-8'>URL 파라메터</h3>
 <table><thead>
 <tr>
 <th>파라메터</th>
@@ -1271,9 +1394,9 @@ echo $response;
   </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>나의 두근거림 패턴을 삭제합니다.</p>
-<h3 id='http-8'>HTTP 요청</h3>
+<h3 id='http-9'>HTTP 요청</h3>
 <p><code>POST https://api.dkdk.io/v2/dkdk</code></p>
-<h3 id='url-8'>URL 파라메터</h3>
+<h3 id='url-9'>URL 파라메터</h3>
 <table><thead>
 <tr>
 <th>파라메터</th>
@@ -1396,9 +1519,9 @@ echo $response;
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>나의 친구가 주고받은 두근거림(하트)의 수를 확인합니다.</p>
-<h3 id='http-9'>HTTP 요청</h3>
+<h3 id='http-10'>HTTP 요청</h3>
 <p><code>POST https://api.dkdk.io/v2/dkdk</code></p>
-<h3 id='url-9'>URL 파라메터</h3>
+<h3 id='url-10'>URL 파라메터</h3>
 <table><thead>
 <tr>
 <th>파라메터</th>
@@ -1444,6 +1567,138 @@ echo $response;
 <tr>
 <td>time</td>
 <td>두근거림을 보내거나 받은 시각</td>
+</tr>
+</tbody></table>
+<h1 id='ai'>AI 기능</h1><h2 id='16cb2e87c5'>얼굴표정 분석 요청</h2><pre class="highlight shell tab-shell"><code>
+curl -H <span class="s2">"dkdk-token: DKDKTOKEN"</span> -H <span class="s2">"Content-type: application/json"</span> -X POST -d <span class="s1">'{"action":"get_face_emotion", "user_uuid":"USER_UUID",  "language":"LANGUAGE", "imageData" : "BASE64_ENCODED_IMAGE"}'</span> https://api.dkdk.io/v2/dkdk
+
+</code></pre><pre class="highlight php tab-php"><code>
+$body['action'] = 'get_face_emotion';
+$body['user_uuid'] = 'USER_UUID';
+$body['imageData'] = 'MY BASE64_ENCODED_IMAGE NAME';
+$body['language'] = 'LANGUAGE';
+
+$headers = array(
+        'Content-Type: application/json',
+        'dkdk-token: DKDKTOKEN'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+
+</code></pre><pre class="highlight javascript tab-javascript"><code>
+<span class="kd">var</span> <span class="nx">jdata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"action"</span><span class="p">:</span><span class="s2">"get_face_emotion"</span><span class="p">,</span> <span class="s2">"user_uuid"</span><span class="p">:</span><span class="s2">"USER_UUID"</span><span class="p">,</span>  <span class="s2">"language"</span><span class="p">:</span><span class="s2">"LANGUAGE"</span><span class="p">,</span> <span class="s2">"imageData"</span> <span class="p">:</span> <span class="s2">"BASE64_ENCODED_IMAGE"</span><span class="p">};</span>
+
+<span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span><span class="na">url</span> <span class="p">:</span> <span class="s2">"https://api.dkdk.io/v2/dkdk"</span><span class="p">,</span>
+       <span class="na">dataType</span> <span class="p">:</span> <span class="s2">"json"</span><span class="p">,</span>
+       <span class="na">contentType</span> <span class="p">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
+       <span class="na">crossDomain</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+       <span class="na">cache</span> <span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+       <span class="na">data</span> <span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">jdata</span><span class="p">),</span>
+       <span class="na">type</span> <span class="p">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+       <span class="na">async</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+       <span class="na">beforeSend</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">request</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s2">"dkdk-token"</span><span class="p">,</span> <span class="s2">"DKDKTOKEN"</span><span class="p">);</span>
+        <span class="p">},</span>
+       <span class="na">success</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">r</span><span class="p">));</span>
+         <span class="k">if</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">result</span> <span class="o">==</span> <span class="s2">"success"</span><span class="p">)</span> <span class="p">{</span>
+           <span class="c1">//r.data;</span>
+         <span class="p">}</span>
+       <span class="p">},</span>
+       <span class="na">error</span><span class="p">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span><span class="nx">status</span><span class="p">,</span><span class="nx">error</span><span class="p">){</span>
+           <span class="nx">alert</span><span class="p">(</span><span class="s2">"code:"</span><span class="o">+</span><span class="nx">request</span><span class="p">.</span><span class="nx">status</span><span class="o">+</span><span class="s2">"\n"</span><span class="o">+</span><span class="s2">"message:"</span><span class="o">+</span><span class="nx">request</span><span class="p">.</span><span class="nx">responseText</span><span class="o">+</span><span class="s2">"\n"</span><span class="o">+</span><span class="s2">"error:"</span><span class="o">+</span><span class="nx">error</span><span class="p">);</span>
+       <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre><pre class="highlight python tab-python"><code>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">,</span>
+    <span class="s">'dkdk-token'</span> <span class="p">:</span> <span class="s">'DKDKTOKEN'</span>
+<span class="p">}</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"action"</span><span class="p">:</span><span class="s">"get_face_emotion"</span><span class="p">,</span> <span class="s">"user_uuid"</span><span class="p">:</span><span class="s">"USER_UUID"</span><span class="p">,</span>  <span class="s">"language"</span><span class="p">:</span><span class="s">"LANGUAGE"</span><span class="p">,</span> <span class="s">"imageData"</span> <span class="p">:</span> <span class="s">"BASE64_ENCODED_IMAGE"</span>
+<span class="p">}</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">'https://api.dkdk.io/v2/dkdk'</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                         <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="s">'response.json()</span><span class="err">
+
+</span></code></pre>
+<blockquote>
+<p>상기의 명령은 아래와 같이 JSON 구조로 응답합니다:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"result"</span><span class="p">:</span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"response"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"exp"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"행복해 보여요"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"emotion"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"happy"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.8</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"exp"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"슬픈가 보다"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"emotion"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"sad"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"exp"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"화가났냐?"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"emotion"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"angry"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nt">"emotion"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"happy"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+
+  </span><span class="err">//실패시</span><span class="w"> </span><span class="err">(감정분석</span><span class="w"> </span><span class="err">실패)</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"result"</span><span class="p">:</span><span class="s2">"failed"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"emotion"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>얼굴 이미지를 전송하여 분석한 감정 상태 값을 받습니다</p>
+<h3 id='http-11'>HTTP 요청</h3>
+<p><code>POST https://api.dkdk.io/v2/dkdk</code></p>
+<h3 id='url-11'>URL 파라메터</h3>
+<table><thead>
+<tr>
+<th>파라메터</th>
+<th>설명</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>dkdk-token</td>
+<td>개발자 Token 값을 헤더에 입력합니다.</td>
+</tr>
+<tr>
+<td>user_uuid</td>
+<td><a href="https://center.dkdk.io/">두근두근 개발자 센터</a>에서 디바이스를 등록한 후 부여받는 user_uuid 값을 입력합니다.</td>
+</tr>
+<tr>
+<td>action</td>
+<td>&#39;get_face_emotion&#39;를 입력합니다.</td>
+</tr>
+<tr>
+<td>imageData</td>
+<td>Base64로 인코딩된 이미지(JPG) 데이터</td>
+</tr>
+<tr>
+<td>language</td>
+<td>사용자 디바이스의 언어값 (ISO 639 aplha-2 또는 aplha-3 코드 - 한국어: ko, 영어: en, 일어: ja, ...)</td>
 </tr>
 </tbody></table>
 <h1 id='a2f003e967'>친구 요청/터치/터치업 신호받기</h1><h2 id='ebaf35304e'>친구요청 받기</h2><pre class="highlight http tab-http"><code><span class="err">
