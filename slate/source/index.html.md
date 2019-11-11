@@ -828,7 +828,8 @@ response.raise_for_status()
 
 ```json
   {
-    "result":"success"
+    "result":"success",
+    "pattern_uuid":"PATTERN_UUID"
   }
 ```
 
@@ -848,6 +849,11 @@ action | 'patternupload'를 입력합니다.
 pattern | 진동패턴 값을 입력합니다.(배열 / 하기'참고'의 내용을 참고해주세요)
 pattern_name | 패턴의 이름을 입력합니다.
 
+### 응답
+
+파라메터 | 설명
+--------- | -----------
+pattern_uuid | 등록한 두근거림 패턴의 uuid
 
 ### 참고
 진동패턴의 모습은 아래와 같습니다.
