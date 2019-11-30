@@ -14,8 +14,8 @@ function getUserNetwork() {
       if(r.result == "success") {
         if (r.data.length > 0) {       
         	currentNetworkData = r.data;          
-        	onlyConnectedNetworkList();
-          hideLoader();
+        	hideLoader();
+        	onlyConnectedNetworkList();          
         }
         else {          
           hideLoader();
@@ -31,13 +31,15 @@ function getUserNetwork() {
 
 
 function onlyConnectedNetworkList() 
-{
+{		
+		showLoder();
 	  var g = new Dracula.Graph();
 	  
 	  var edata = currentNetworkData;
 	  
 	  if (edata == null) {
 	  	alert("Empty");
+	  	hideLoader();
 	  	return;
 	  }
 
@@ -55,16 +57,20 @@ function onlyConnectedNetworkList()
 		
 		var renderer = new Dracula.Renderer.Raphael('#usernetwork', g, $('#usernetwork').width(), 1024);
 		renderer.draw();
+		
+		hideLoader();
 }
 
-function addNetworkList() 
+function allNetworkList() 
 {
+		showLoder();
 	  var g = new Dracula.Graph();
 	  
 	  var edata = currentNetworkData;
 	  
 	  if (edata == null) {
 	  	alert("Empty");
+	  	hideLoader();
 	  	return;
 	  }
 
@@ -82,6 +88,8 @@ function addNetworkList()
 		
 		var renderer = new Dracula.Renderer.Raphael('#usernetwork', g, $('#usernetwork').width(), 1024);
 		renderer.draw();
+		
+		hideLoader();
 }
 
 function initAdmin() {
