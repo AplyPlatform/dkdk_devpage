@@ -137,7 +137,7 @@ function onlyConnectedNetworkOnMap()
       							&& (element[0] != element[1])  )
                     {
                             var bFound = false;
-                            var feturesArray = [];
+                            var featuresArray = [];
 
                             origin[0] += generateRandomNumber();
                             origin[1] += generateRandomNumber();
