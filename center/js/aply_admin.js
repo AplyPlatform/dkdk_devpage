@@ -180,6 +180,66 @@ function onlyConnectedNetworkOnMap()
                             }]
                       };
 
+                      var point = {
+                            "type": "FeatureCollection",
+                            "features": [{
+                              "type": "Feature",
+                              "properties": {},
+                              "geometry": {
+                                  "type": "Point",
+                                  "coordinates": origin
+                                }
+                              }]
+                      };
+
+                      var point2 = {
+                            "type": "FeatureCollection",
+                            "features": [{
+                              "type": "Feature",
+                              "properties": {},
+                              "geometry": {
+                                  "type": "Point",
+                                  "coordinates": destination
+                                }
+                              }]
+                      };
+
+                      map.addSource('point' + ii, {
+                        "type": "geojson",
+                        "data": point
+                      });
+
+                      map.addLayer({
+                        "id": 'point' + ii,
+                        "source": 'point' + ii,
+                        "type": "symbol",
+                        "layout": {
+                        "icon-image": "airport-15",
+                        "icon-rotate": ["get", "bearing"],
+                        "icon-rotation-alignment": "map",
+                        "icon-allow-overlap": true,
+                        "icon-ignore-placement": true
+                        }
+                      });
+
+                      map.addSource('point_' + ii, {
+                        "type": "geojson",
+                        "data": point2
+                      });
+
+                      map.addLayer({
+                        "id": 'point_' + ii,
+                        "source": 'point_' + ii,
+                        "type": "symbol",
+                        "layout": {
+                        "icon-image": "airport-15",
+                        "icon-rotate": ["get", "bearing"],
+                        "icon-rotation-alignment": "map",
+                        "icon-allow-overlap": true,
+                        "icon-ignore-placement": true
+                        }
+                      });
+
                       map.addSource('route' + ii, {
                           "type": "geojson",
                           "data": route
@@ -194,6 +254,8 @@ function onlyConnectedNetworkOnMap()
                             "line-color": "#007cbf"
                           }
                       });
+
+
 
                       ii++;
                     }
