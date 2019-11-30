@@ -286,7 +286,7 @@ function onlyConnectedNetworkOnMap()
                       });
 
                       map.addLayer({
-                          "id": 'route' + ii,
+                          "id": 'route_' + ii,
                           "source": 'route' + ii,
                           "type": "line",
                           "paint": {
