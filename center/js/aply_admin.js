@@ -158,9 +158,7 @@ var point = {
 
 function initAdmin() {
   setMapbox();
-  hideLoader();
-
-	//getUserNetwork();
+	getUserNetwork();
 }
 
 

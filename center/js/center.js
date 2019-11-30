@@ -277,7 +277,7 @@ function initCenter() {
   var socialid = getCookie('socialid');
 
   if (isSet(usertoken) == false) {
-    //location.href="index.html";
+    location.href="index.html";
     return;
   }
   $('#dkdktoken_view').val(getCookie('user_token'));
