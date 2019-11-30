@@ -5,7 +5,7 @@ function getUserNetwork() {
     var emailid = getCookie("dev_user_id");    
 
     var jdata = {
-      "daction": "admin_usernetwork",
+      "daction": "admin_user_network",
       "emailid" : emailid,
       "token" : token,      
       "action" : "developer"};
