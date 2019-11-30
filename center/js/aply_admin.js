@@ -32,7 +32,7 @@ function getUserNetwork() {
 
 function onlyConnectedNetworkList() 
 {		
-		showLoder();
+		showLoader();
 	  var g = new Dracula.Graph();
 	  
 	  var edata = currentNetworkData;
@@ -63,7 +63,7 @@ function onlyConnectedNetworkList()
 
 function allNetworkList() 
 {
-		showLoder();
+		showLoader();
 	  var g = new Dracula.Graph();
 	  
 	  var edata = currentNetworkData;
