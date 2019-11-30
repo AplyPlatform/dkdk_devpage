@@ -30,37 +30,17 @@ function getUserNetwork() {
 
 function addNetworkList(edate) 
 {
-	  var cy = cytoscape({
+	  var g = new Dracula.Graph();
 
-  		container: document.getElementById('usernetwork'), // container to render in
-
-		  elements: edate,
+		edate.forEach(function(element){    	
+    	g.addEdge(element[0], element[1]);
+		});		
 		
-		  style: [ // the stylesheet for the graph
-		    {
-		      selector: 'node',
-		      style: {
-		        'background-color': '#666',
-		        'label': 'data(id)'
-		      }
-		    },
+		var layouter = new Dracula.Layout.Spring(g);
+		layouter.layout();
 		
-		    {
-		      selector: 'edge',
-		      style: {
-		        'width': 3,
-		        'line-color': '#ccc',
-		        'target-arrow-color': '#ccc',
-		        'target-arrow-shape': 'triangle'
-		      }
-		    }
-		  ],
-		
-		  layout: {
-		    name: 'grid',
-		    rows: 1
-		  }
-		});
+		var renderer = new Dracula.Renderer.Raphael('#usernetwork', g, 400, 300);
+		renderer.draw();
 }
 
 function initAdmin() {
