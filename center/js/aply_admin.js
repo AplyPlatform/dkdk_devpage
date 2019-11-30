@@ -216,7 +216,11 @@ function onlyConnectedNetworkOnMap()
                         "source": 'point' + ii,
                         "type": "symbol",
                         "layout": {
-                        "icon-image": "circle-stroked-15"
+                          "icon-image": "airport-15",
+                          "icon-rotate": ["get", "bearing"],
+                          "icon-rotation-alignment": "map",
+                          "icon-allow-overlap": true,
+                          "icon-ignore-placement": true
                         }
                       });
 
@@ -230,7 +234,11 @@ function onlyConnectedNetworkOnMap()
                         "source": 'point_' + ii,
                         "type": "symbol",
                         "layout": {
-                        "icon-image": "circle-stroked-15"
+                          "icon-image": "airport-15",
+                          "icon-rotate": ["get", "bearing"],
+                          "icon-rotation-alignment": "map",
+                          "icon-allow-overlap": true,
+                          "icon-ignore-placement": true
                         }
                       });
 
