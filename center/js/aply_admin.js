@@ -95,8 +95,8 @@ function allNetworkList()
 }
 
 function generateRandomNumber() {
-    var min = 0.0001,
-        max = 0.09,
+    var min = 0.1,
+        max = 10.0,
         highlightedNumber = Math.random() * (max - min) + min;
 
     return highlightedNumber;
