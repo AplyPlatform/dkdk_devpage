@@ -109,7 +109,7 @@ function onlyConnectedNetworkOnMap()
         // San Francisco
     var origin = [-122.414, 37.776];
     // Washington DC
-    var destination = [37.5650168, 126.8491235];
+    var destination = [126.8491235, 37.5650168s];
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiZ3VubWFuOTciLCJhIjoiY2lvOWFpdDc5MDMxdnZpbHpocjRmMzI2ZyJ9.lnenicwIbPNDr2k7gbKLbA';
       var map = new mapboxgl.Map({
