@@ -33,7 +33,7 @@ function addNetworkList(edate)
 	  var g = new Dracula.Graph();
 
 		edate.forEach(function(element){
-			if (element[1] == "-") {
+			if (element[1] == "-" || element[1] == null || element[1] == "null") {
 				g.addEdge(element[0]);
 			}
 			else {
