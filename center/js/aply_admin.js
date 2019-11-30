@@ -34,7 +34,7 @@ function addNetworkList(edate)
 
 		edate.forEach(function(element){
 			if (element[1] == "-" || element[1] == null || element[1] == "null") {
-				g.addEdge(element[0]);
+				g.addEdge(element[0], element[0]);
 			}
 			else {
     		g.addEdge(element[0], element[1]);
