@@ -41,7 +41,7 @@ function onlyConnectedNetworkList()
 	  	return;
 	  }
 
-		edate.forEach(function(element){
+		edata.forEach(function(element){
 			
 				if (  (element[0] != "-" && element[0] != null && element[0] != "null")
 							&& (element[1] != "-" && element[1] != null && element[1] != "null")
@@ -68,7 +68,7 @@ function addNetworkList()
 	  	return;
 	  }
 
-		edate.forEach(function(element){
+		edata.forEach(function(element){
 			if (element[1] == "-" || element[1] == null || element[1] == "null") {
 				g.addEdge(element[0], element[0]);
 			}
