@@ -216,37 +216,37 @@ function onlyConnectedNetworkOnMap()
                         "type": "geojson",
                         "data": point
                       });
-
-                      map.addLayer({
-                        "id": 'point' + ii,
-                        "source": 'point' + ii,
-                        "type": "symbol",
-                        "layout": {
-                          "icon-image": "airport-15",
-                          "icon-rotate": ["get", "bearing"],
-                          "icon-rotation-alignment": "map",
-                          "icon-allow-overlap": true,
-                          "icon-ignore-placement": true
-                        }
-                      });
+                      //
+                      // map.addLayer({
+                      //   "id": 'point' + ii,
+                      //   "source": 'point' + ii,
+                      //   "type": "symbol",
+                      //   "layout": {
+                      //     "icon-image": "airport-15",
+                      //     "icon-rotate": ["get", "bearing"],
+                      //     "icon-rotation-alignment": "map",
+                      //     "icon-allow-overlap": true,
+                      //     "icon-ignore-placement": true
+                      //   }
+                      // });
 
                       map.addSource('point_' + ii, {
                         "type": "geojson",
                         "data": point2
                       });
 
-                      map.addLayer({
-                        "id": 'point_' + ii,
-                        "source": 'point_' + ii,
-                        "type": "symbol",
-                        "layout": {
-                          "icon-image": "airport-15",
-                          "icon-rotate": ["get", "bearing"],
-                          "icon-rotation-alignment": "map",
-                          "icon-allow-overlap": true,
-                          "icon-ignore-placement": true
-                        }
-                      });
+                      // map.addLayer({
+                      //   "id": 'point_' + ii,
+                      //   "source": 'point_' + ii,
+                      //   "type": "symbol",
+                      //   "layout": {
+                      //     "icon-image": "airport-15",
+                      //     "icon-rotate": ["get", "bearing"],
+                      //     "icon-rotation-alignment": "map",
+                      //     "icon-allow-overlap": true,
+                      //     "icon-ignore-placement": true
+                      //   }
+                      // });
 
                       map.addSource('route' + ii, {
                           "type": "geojson",
