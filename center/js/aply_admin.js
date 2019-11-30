@@ -44,7 +44,7 @@ function addNetworkList(edate)
 		var layouter = new Dracula.Layout.Spring(g);
 		layouter.layout();
 		
-		var renderer = new Dracula.Renderer.Raphael('#usernetwork', g, 400, 300);
+		var renderer = new Dracula.Renderer.Raphael('#usernetwork', g, $('#usernetwork').width(), 1024);
 		renderer.draw();
 }
 
