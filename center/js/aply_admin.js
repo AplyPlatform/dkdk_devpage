@@ -102,6 +102,14 @@ function generateRandomNumber() {
     return highlightedNumber;
 };
 
+function generateRandomSel() {
+    var min = -10,
+        max = 10,
+        highlightedNumber = Math.random() * (max - min) + min;
+
+    return highlightedNumber;
+};
+
 function onlyConnectedNetworkOnMap()
 {
 		showLoader();
@@ -146,7 +154,6 @@ function onlyConnectedNetworkOnMap()
                       }
 
                       if (bFound == false) {
-
                         nodeList.push(element[0]);
                       }
 
@@ -163,10 +170,26 @@ function onlyConnectedNetworkOnMap()
                         nodeList.push(element[1]);
                       }
 
-                      origin[0] += generateRandomNumber();
-                      origin[1] += generateRandomNumber();
-                      destination[0] += generateRandomNumber();
-                      destination[1] += generateRandomNumber();
+                      if (generateRandomSel() > 0)
+                        origin[0] += generateRandomNumber();
+                      else
+                        origin[0] -= generateRandomNumber();
+
+                      if (generateRandomSel() > 0)
+                        origin[1] += generateRandomNumber();
+                      else
+                        origin[1] -= generateRandomNumber();
+
+                      if (generateRandomSel() > 0)
+                        destination[0] += generateRandomNumber();
+                      else
+                        destination[0] -= generateRandomNumber();
+
+                      if (generateRandomSel() > 0)
+                        destination[1] += generateRandomNumber();
+                      else
+                        destination[1] -= generateRandomNumber();
+
                       // A simple line from origin to destination.
                       var route = {
                             "type": "FeatureCollection",
@@ -182,7 +205,8 @@ function onlyConnectedNetworkOnMap()
                             }]
                       };
 
-                      var point = {
+                      var points = [
+                          {
                             "type": "FeatureCollection",
                             "features": [{
                               "type": "Feature",
@@ -195,9 +219,8 @@ function onlyConnectedNetworkOnMap()
                                   "coordinates": origin
                                 }
                               }]
-                      };
-
-                      var point2 = {
+                          },
+                          {
                             "type": "FeatureCollection",
                             "features": [{
                               "type": "Feature",
@@ -210,11 +233,12 @@ function onlyConnectedNetworkOnMap()
                                   "coordinates": destination
                                 }
                               }]
-                      };
+                          }
+                    ];
 
                       map.addSource('point' + ii, {
                         "type": "geojson",
-                        "data": point
+                        "data": points
                       });
                       //
                       // map.addLayer({
@@ -229,11 +253,6 @@ function onlyConnectedNetworkOnMap()
                       //     "icon-ignore-placement": true
                       //   }
                       // });
-
-                      map.addSource('point_' + ii, {
-                        "type": "geojson",
-                        "data": point2
-                      });
 
                       // map.addLayer({
                       //   "id": 'point_' + ii,
