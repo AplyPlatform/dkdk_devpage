@@ -1,5 +1,5 @@
 
-
+var currentNetworkData;
 function getUserNetwork() {    
     var token = getCookie("user_token");
     var emailid = getCookie("dev_user_id");    
@@ -12,8 +12,9 @@ function getUserNetwork() {
 
     ajaxRequest(jdata, function (r) {
       if(r.result == "success") {
-        if (r.data.length > 0) {          
-          addNetworkList(r.data);
+        if (r.data.length > 0) {       
+        	currentNetworkData = r.data;          
+        	onlyConnectedNetworkList();
           hideLoader();
         }
         else {          
@@ -28,9 +29,44 @@ function getUserNetwork() {
     });
 }
 
-function addNetworkList(edate) 
+
+function onlyConnectedNetworkList() 
 {
 	  var g = new Dracula.Graph();
+	  
+	  var edata = currentNetworkData;
+	  
+	  if (edata == null) {
+	  	alert("Empty");
+	  	return;
+	  }
+
+		edate.forEach(function(element){
+			
+				if (  (element[0] != "-" && element[0] != null && element[0] != "null")
+							&& (element[1] != "-" && element[1] != null && element[1] != "null")
+							&& (element[0] != element[1])  )
+    		g.addEdge(element[0], element[1]);
+    	
+		});		
+		
+		var layouter = new Dracula.Layout.Spring(g);
+		layouter.layout();
+		
+		var renderer = new Dracula.Renderer.Raphael('#usernetwork', g, $('#usernetwork').width(), 1024);
+		renderer.draw();
+}
+
+function addNetworkList() 
+{
+	  var g = new Dracula.Graph();
+	  
+	  var edata = currentNetworkData;
+	  
+	  if (edata == null) {
+	  	alert("Empty");
+	  	return;
+	  }
 
 		edate.forEach(function(element){
 			if (element[1] == "-" || element[1] == null || element[1] == "null") {
