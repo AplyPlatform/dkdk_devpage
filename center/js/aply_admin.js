@@ -28,20 +28,39 @@ function getUserNetwork() {
     });
 }
 
-function addNetworkList(item) {
-    var nodes = new vis.DataSet(item.nodes);
-	
-	  // create an array with edges
-	  var edges = new vis.DataSet(item.edges);
-	
-	  // create a network
-	  var container = document.getElementById("usernetwork");
-	  var data = {
-	    nodes: nodes,
-	    edges: edges
-	  };
-	  var options = {};
-	  var network = new vis.Network(container, data, options);
+function addNetworkList(edate) 
+{
+	  var cy = cytoscape({
+
+  		container: document.getElementById('usernetwork'), // container to render in
+
+		  elements: edate,
+		
+		  style: [ // the stylesheet for the graph
+		    {
+		      selector: 'node',
+		      style: {
+		        'background-color': '#666',
+		        'label': 'data(id)'
+		      }
+		    },
+		
+		    {
+		      selector: 'edge',
+		      style: {
+		        'width': 3,
+		        'line-color': '#ccc',
+		        'target-arrow-color': '#ccc',
+		        'target-arrow-shape': 'triangle'
+		      }
+		    }
+		  ],
+		
+		  layout: {
+		    name: 'grid',
+		    rows: 1
+		  }
+		});
 }
 
 function initAdmin() {
