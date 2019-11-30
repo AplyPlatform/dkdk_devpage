@@ -16,6 +16,7 @@ function getUserNetwork() {
         	currentNetworkData = r.data;
         	hideLoader();
         	onlyConnectedNetworkList();
+          onlyConnectedNetworkOnMap();
         }
         else {
           hideLoader();
@@ -43,61 +44,11 @@ function onlyConnectedNetworkList()
 	  	return;
 	  }
 
-    var dimensionX = 120;
-    var dimensionY = 60;
-
-    var renderEvent = function(r, n) {
-      var set = r.set().push(
-        r.rect(n.point[0], n.point[1], dimensionX, dimensionY).click(function () {
-          console.log(this.data("i"));}).attr({
-          "fill": '#D6D825',
-          "stroke-width": 2,
-          r: "9px"
-        })).push(r.text(n.point[0]+(dimensionX/2), n.point[1]+(dimensionY/2), n.label).attr({
-          "font-size": "12px"
-        }));
-        set.click(
-          function onClick() {
-            console.log('click');
-          }
-        );
-        return set;
-  };
-
-    var nodeList = [];
 		edata.forEach(function(element){
 				if (  (element[0] != "-" && element[0] != null && element[0] != "null")
 							&& (element[1] != "-" && element[1] != null && element[1] != "null")
 							&& (element[0] != element[1])  )
               {
-                var bFound = false;
-                for(var i=0;i<nodeList.length;i++) {
-                  var dn = nodeList[i];
-                  if (dn == element[0]) {
-                    bFound = true;
-                    break;
-                  }
-                }
-
-                if (bFound == false) {
-                  g.addNode(element[0], {label: element[0], render: renderEvent});
-                  nodeList.push(element[0]);
-                }
-
-                bFound = false;
-                for(var i=0;i<nodeList.length;i++) {
-                  var dn = nodeList[i];
-                  if (dn == element[1]) {
-                    bFound = true;
-                    break;
-                  }
-                }
-
-                if (bFound == false) {
-                  g.addNode(element[1], {label: element[1], render: renderEvent});
-                  nodeList.push(element[1]);
-                }
-
             		g.addEdge(element[0], element[1]);
               }
 		});
@@ -110,6 +61,7 @@ function onlyConnectedNetworkList()
 
 		hideLoader();
 }
+
 
 function allNetworkList()
 {
@@ -142,69 +94,115 @@ function allNetworkList()
 		hideLoader();
 }
 
-function setMapbox() {
+function generateRandomNumber() {
+    var min = 0.0001,
+        max = 0.09,
+        highlightedNumber = Math.random() * (max - min) + min;
+
+    return highlightedNumber;
+};
+
+function onlyConnectedNetworkOnMap()
+{
+		showLoader();
+
+        // San Francisco
+    var origin = [-122.414, 37.776];
+    // Washington DC
+    var destination = [37.5650168, 126.8491235];
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiZ3VubWFuOTciLCJhIjoiY2lvOWFpdDc5MDMxdnZpbHpocjRmMzI2ZyJ9.lnenicwIbPNDr2k7gbKLbA';
       var map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11'
     });
 
-    // San Francisco
-var origin = [-122.414, 37.776];
+	  var edata = currentNetworkData;
 
-// Washington DC
-var destination = [-77.032, 38.913];
+	  if (edata == null) {
+	  	alert("Empty");
+	  	hideLoader();
+	  	return;
+	  }
 
-// A simple line from origin to destination.
-var route = {
-      "type": "FeatureCollection",
-      "features": [{
-          "type": "Feature",
-          "geometry": {
-              "type": "LineString",
-              "coordinates": [
-                origin,
-                destination
-              ]
-            }
-      }]
-};
+    map.on('load', function () {
 
-// A single point that animates along the route.
-// Coordinates are initially set to origin.
-var point = {
-    "type": "FeatureCollection",
-    "features": [{
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "Point",
-        "coordinates": origin
-      }
-  }]
-};
+          var nodeList = [];
+      		edata.forEach(function(element){
+      				if (  (element[0] != "-" && element[0] != null && element[0] != "null")
+      							&& (element[1] != "-" && element[1] != null && element[1] != "null")
+      							&& (element[0] != element[1])  )
+                    {
+                      var bFound = false;
+                      for(var i=0;i<nodeList.length;i++) {
+                        var dn = nodeList[i];
+                        if (dn == element[0]) {
+                          bFound = true;
+                          break;
+                        }
+                      }
 
-  map.on('load', function () {
-      map.addSource('route', {
-          "type": "geojson",
-          "data": route
-      });
+                      if (bFound == false) {
 
-      map.addLayer({
-          "id": "route",
-          "source": "route",
-          "type": "line",
-          "paint": {
-            "line-width": 2,
-            "line-color": "#007cbf"
-          }
-      });
-  });
+                        nodeList.push(element[0]);
+                      }
+
+                      bFound = false;
+                      for(var i=0;i<nodeList.length;i++) {
+                        var dn = nodeList[i];
+                        if (dn == element[1]) {
+                          bFound = true;
+                          break;
+                        }
+                      }
+
+                      if (bFound == false) {
+                        nodeList.push(element[1]);
+                      }
+
+                      origin[0] += generateRandomNumber();
+                      origin[1] += generateRandomNumber();
+                      destination[0] += generateRandomNumber();
+                      destination[1] += generateRandomNumber();
+                      // A simple line from origin to destination.
+                      var route = {
+                            "type": "FeatureCollection",
+                            "features": [{
+                                "type": "Feature",
+                                "geometry": {
+                                    "type": "LineString",
+                                    "coordinates": [
+                                      origin,
+                                      destination
+                                    ]
+                                  }
+                            }]
+                      };
+
+                      map.addSource('route', {
+                          "type": "geojson",
+                          "data": route
+                      });
+
+                      map.addLayer({
+                          "id": "route",
+                          "source": "route",
+                          "type": "line",
+                          "paint": {
+                            "line-width": 2,
+                            "line-color": "#007cbf"
+                          }
+                      });
+                    }
+      		});
+
+    });
+
+		hideLoader();
 }
 
 function initAdmin() {
-  setMapbox();
-	getUserNetwork();
+  getUserNetwork();
 }
 
 
