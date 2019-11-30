@@ -240,6 +240,19 @@ function onlyConnectedNetworkOnMap()
                         "type": "geojson",
                         "data": points
                       });
+
+                      map.addLayer({
+                            "id": 'point_' + ii,
+                            "type": "symbol",
+                            "source": 'point' + ii,
+                            "layout": {
+                            "text-field": ["get", "description"],
+                            "text-variable-anchor": ["top", "bottom", "left", "right"],
+                            "text-radial-offset": 0.5,
+                            "text-justify": "auto",
+                            "icon-image": ["concat", ["get", "icon"], "-15"]
+                          }
+                      });
                       //
                       // map.addLayer({
                       //   "id": 'point' + ii,
