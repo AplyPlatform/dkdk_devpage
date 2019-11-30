@@ -43,16 +43,34 @@ function onlyConnectedNetworkList()
 	  	return;
 	  }
 
+    var dimensionX = 120;
+    var dimensionY = 60;
+
+    var renderEvent = function(r, n) {
+      var set = r.set().push(
+        r.rect(n.point[0], n.point[1], dimensionX, dimensionY).click(function () {
+          console.log(this.data("i"));}).attr({
+          "fill": '#D6D825',
+          "stroke-width": 2,
+          r: "9px"
+        })).push(r.text(n.point[0]+(dimensionX/2), n.point[1]+(dimensionY/2), n.label).attr({
+          "font-size": "12px"
+        }));
+        set.click(
+          function onClick() {
+            console.log('click');
+          }
+        );
+        return set;
+  };
+
 		edata.forEach(function(element){
 				if (  (element[0] != "-" && element[0] != null && element[0] != "null")
 							&& (element[1] != "-" && element[1] != null && element[1] != "null")
 							&& (element[0] != element[1])  )
               {
+                g.addNode(element[0], {label: element[0], render: renderPerson});
             		g.addEdge(element[0], element[1]);
-
-                $("#" + element[0]).click(function(){
-                  alert("hehe" + element[0]);
-                });
               }
 		});
 
