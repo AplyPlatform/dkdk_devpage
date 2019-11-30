@@ -52,20 +52,20 @@ function requestDeviceRegister() {
   var version = $('#version').val();
 
   if (user_nickname == "") {
-	alert("디바이스의 이름을 입력해 주세요");
+				alert("디바이스의 이름을 입력해 주세요");
       	hideLoader();
 	return;
   }
 
   if (device_id == "") {
-	alert("신호를 받을 디바이스의 아이디 또는 주소를 입력해 주세요");
+				alert("신호를 받을 디바이스의 아이디 또는 주소를 입력해 주세요");
       	hideLoader();
 	return;
   }
 
 
   if (version == "") {
-	alert("디바이스의 version을 입력해 주세요");
+				alert("디바이스의 version을 입력해 주세요");
       	hideLoader();
 	return;
   }

@@ -43,6 +43,8 @@ gtag('config', 'UA-130136264-5');
     <link rel="stylesheet" href="css/ol.css" type="text/css">
     <link href="css/bootstrap-social.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/vis-network/dist/vis-network.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://unpkg.com/vis-network/dist/vis-network.min.css" />
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
 </head>
 
@@ -135,12 +137,25 @@ gtag('config', 'UA-130136264-5');
                     <div><br></div>
                     <div class="panel panel-default loginforms">
                       <div class="panel-body">
-                        <h3>두근두근 사용자 관리자 (Admin)</h3>
+                        <h3>관리자 페이지(Admin)</h3>
 			<p>A D M I N. P A G E</p>
                       </div>
                     </div>
                 </div>
                 <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            사용자 관리
+                        </div>
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body" id="usernetwork">
+                    </div>
+                </div>
             </div>
             <!-- /.row -->
             <div class="row">
@@ -195,7 +210,7 @@ gtag('config', 'UA-130136264-5');
     <!-- Custom Theme JavaScript -->
     <script src="./dist/js/sb-admin-2.js"></script>
     <script src="./js/center.js"></script>
-
+    <script src="./js/aply_admin.js"></script>
 </body>
 
 </html>
