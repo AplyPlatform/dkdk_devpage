@@ -128,6 +128,7 @@ function onlyConnectedNetworkOnMap()
     map.on('load', function () {
 
           var nodeList = [];
+          var ii = 0;
       		edata.forEach(function(element){
       				if (  (element[0] != "-" && element[0] != null && element[0] != "null")
       							&& (element[1] != "-" && element[1] != null && element[1] != "null")
@@ -179,14 +180,14 @@ function onlyConnectedNetworkOnMap()
                             }]
                       };
 
-                      map.addSource('route', {
+                      map.addSource('route' + ii, {
                           "type": "geojson",
                           "data": route
                       });
 
                       map.addLayer({
-                          "id": "route",
-                          "source": "route",
+                          "id": 'route' + ii,
+                          "source": 'route' + ii,
                           "type": "line",
                           "paint": {
                             "line-width": 2,
