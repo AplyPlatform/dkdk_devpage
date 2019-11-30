@@ -42,7 +42,8 @@ gtag('config', 'UA-130136264-5');
     <link href="./vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/ol.css" type="text/css">
     <link href="css/bootstrap-social.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">    
+    <link href="css/style.css" rel="stylesheet">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
 </head>
 
@@ -148,12 +149,15 @@ gtag('config', 'UA-130136264-5');
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             관계도
-                            
+
                             <a class="btn btn-primary btn-lg active" role="button" onClick="onlyConnectedNetworkList()">연결된 Nodes</a> &nbsp; &nbsp;
                             <a class="btn btn-primary btn-lg active" role="button" onClick="allNetworkList()">전체 Nodes</a>
                         </div>
                     </div>
-                    <!-- /.panel-heading -->
+
+                    <div class="panel-body" id="map" style="height: 1024px; width: 100%;">
+                    </div>
+
                     <div class="panel-body" id="usernetwork" style="height: 1024px; width: 100%;">
                     </div>
                 </div>
@@ -206,11 +210,12 @@ gtag('config', 'UA-130136264-5');
     <script src="./vendor/metisMenu/metisMenu.min.js"></script>
 
     <script src="./vendor/raphael/raphael.min.js"></script>
-    <script src="./vendor/morrisjs/morris.min.js"></script>		
+    <script src="./vendor/morrisjs/morris.min.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="./dist/js/sb-admin-2.js"></script>
-    
     <script src="./js/dracula.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
+
     <script src="./js/center.js"></script>
     <script src="./js/aply_admin.js"></script>
 </body>
