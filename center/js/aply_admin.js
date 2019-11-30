@@ -137,6 +137,13 @@ function onlyConnectedNetworkOnMap()
       							&& (element[0] != element[1])  )
                     {
                             var bFound = false;
+                            var feturesArray = [];
+
+                            origin[0] += generateRandomNumber();
+                            origin[1] += generateRandomNumber();
+                            destination[0] += generateRandomNumber();
+                            destination[1] += generateRandomNumber();
+
                             for(var i=0;i<nodeList.length;i++) {
                               var dn = nodeList[i];
                               if (dn == element[0]) {
@@ -147,6 +154,17 @@ function onlyConnectedNetworkOnMap()
 
                             if (bFound == false) {
                               nodeList.push(element[0]);
+                              featuresArray.push({
+                                "type": "Feature",
+                                "properties": {
+                                      "description": element[0],
+                                      "icon": "theatre"
+                                    },
+                                    "geometry": {
+                                    "type": "Point",
+                                    "coordinates": origin
+                                    }
+                              });
                             }
 
                             bFound = false;
@@ -160,13 +178,21 @@ function onlyConnectedNetworkOnMap()
 
                             if (bFound == false) {
                               nodeList.push(element[1]);
+                              featuresArray.push({
+                                "type": "Feature",
+                                "properties": {
+                                      "description": element[1],
+                                      "icon": "theatre"
+                                    },
+                                    "geometry": {
+                                    "type": "Point",
+                                    "coordinates": destination
+                                    }
+                              });
                             }
 
 
-                            origin[0] += generateRandomNumber();
-                            origin[1] += generateRandomNumber();
-                            destination[0] += generateRandomNumber();
-                            destination[1] += generateRandomNumber();
+
 
 
                             // A simple line from origin to destination.
@@ -187,30 +213,7 @@ function onlyConnectedNetworkOnMap()
                             var points =
                                 {
                                   "type": "FeatureCollection",
-                                  "features": [
-                                    {
-                                      "type": "Feature",
-                                      "properties": {
-                                            "description": "Ford's Theater",
-                                            "icon": "theatre"
-                                          },
-                                      "geometry": {
-                                          "type": "Point",
-                                          "coordinates": origin
-                                          }
-                                    },
-                                    {
-                                      "type": "Feature",
-                                      "properties": {
-                                            "description": "Ford's Theater",
-                                            "icon": "theatre"
-                                          },
-                                      "geometry": {
-                                          "type": "Point",
-                                          "coordinates": destination
-                                        }
-                                    }
-                                  ]
+                                  "features": featuresArray
                             };
 
                             map.addSource('point' + ii, {
