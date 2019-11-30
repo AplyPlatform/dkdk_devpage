@@ -194,6 +194,8 @@ function onlyConnectedNetworkOnMap()
                             "line-color": "#007cbf"
                           }
                       });
+
+                      ii++;
                     }
       		});
 
