@@ -64,12 +64,40 @@ function onlyConnectedNetworkList()
         return set;
   };
 
+    var nodeList = [];
 		edata.forEach(function(element){
 				if (  (element[0] != "-" && element[0] != null && element[0] != "null")
 							&& (element[1] != "-" && element[1] != null && element[1] != "null")
 							&& (element[0] != element[1])  )
               {
-                g.addNode(element[0], {label: element[0], render: renderEvent});
+                var bFound = false;
+                for(var i=0;i<nodeList.length;i++) {
+                  var dn = nodeList[i];
+                  if (dn == element[0]) {
+                    bFound = true;
+                    break;
+                  }
+                }
+
+                if (bFound == false) {
+                  g.addNode(element[0], {label: element[0], render: renderEvent});
+                  nodeList.push(element[0]);
+                }
+
+                bFound = false;
+                for(var i=0;i<nodeList.length;i++) {
+                  var dn = nodeList[i];
+                  if (dn == element[1]) {
+                    bFound = true;
+                    break;
+                  }
+                }
+
+                if (bFound == false) {
+                  g.addNode(element[1], {label: element[1], render: renderEvent});
+                  nodeList.push(element[1]);
+                }
+
             		g.addEdge(element[0], element[1]);
               }
 		});
