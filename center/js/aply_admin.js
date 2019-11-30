@@ -32,8 +32,13 @@ function addNetworkList(edate)
 {
 	  var g = new Dracula.Graph();
 
-		edate.forEach(function(element){    	
-    	g.addEdge(element[0], element[1]);
+		edate.forEach(function(element){
+			if (element[1] == "") {
+				g.addEdge(element[0]);
+			}
+			else {
+    		g.addEdge(element[0], element[1]);
+    	}
 		});		
 		
 		var layouter = new Dracula.Layout.Spring(g);
