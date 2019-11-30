@@ -50,7 +50,7 @@ function onlyConnectedNetworkList()
               {
             		g.addEdge(element[0], element[1]);
 
-                $("#" + element[0]).live('click',function(){
+                $("#" + element[0]).click(function(){
                   alert("hehe" + element[0]);
                 });
               }
