@@ -186,7 +186,10 @@ function onlyConnectedNetworkOnMap()
                             "type": "FeatureCollection",
                             "features": [{
                               "type": "Feature",
-                              "properties": {},
+                              "properties": {
+                                    "description": "Ford's Theater",
+                                    "icon": "theatre"
+                                  },
                               "geometry": {
                                   "type": "Point",
                                   "coordinates": origin
@@ -198,7 +201,10 @@ function onlyConnectedNetworkOnMap()
                             "type": "FeatureCollection",
                             "features": [{
                               "type": "Feature",
-                              "properties": {},
+                              "properties": {
+                                    "description": "Ford's Theater",
+                                    "icon": "theatre"
+                                  },
                               "geometry": {
                                   "type": "Point",
                                   "coordinates": destination
