@@ -69,7 +69,7 @@ function onlyConnectedNetworkList()
 							&& (element[1] != "-" && element[1] != null && element[1] != "null")
 							&& (element[0] != element[1])  )
               {
-                g.addNode(element[0], {label: element[0], render: renderPerson});
+                g.addNode(element[0], {label: element[0], render: renderEvent});
             		g.addEdge(element[0], element[1]);
               }
 		});
