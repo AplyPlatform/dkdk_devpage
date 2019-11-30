@@ -144,156 +144,154 @@ function onlyConnectedNetworkOnMap()
       							&& (element[1] != "-" && element[1] != null && element[1] != "null")
       							&& (element[0] != element[1])  )
                     {
-                      var bFound = false;
-                      for(var i=0;i<nodeList.length;i++) {
-                        var dn = nodeList[i];
-                        if (dn == element[0]) {
-                          bFound = true;
-                          break;
-                        }
-                      }
+                            var bFound = false;
+                            for(var i=0;i<nodeList.length;i++) {
+                              var dn = nodeList[i];
+                              if (dn == element[0]) {
+                                bFound = true;
+                                break;
+                              }
+                            }
 
-                      if (bFound == false) {
-                        nodeList.push(element[0]);
-                      }
+                            if (bFound == false) {
+                              nodeList.push(element[0]);
+                            }
 
-                      bFound = false;
-                      for(var i=0;i<nodeList.length;i++) {
-                        var dn = nodeList[i];
-                        if (dn == element[1]) {
-                          bFound = true;
-                          break;
-                        }
-                      }
+                            bFound = false;
+                            for(var i=0;i<nodeList.length;i++) {
+                              var dn = nodeList[i];
+                              if (dn == element[1]) {
+                                bFound = true;
+                                break;
+                              }
+                            }
 
-                      if (bFound == false) {
-                        nodeList.push(element[1]);
-                      }
+                            if (bFound == false) {
+                              nodeList.push(element[1]);
+                            }
 
-                      if (generateRandomSel() > 0)
-                        origin[0] += generateRandomNumber();
-                      else
-                        origin[0] -= generateRandomNumber();
+                            if (generateRandomSel() > 0)
+                              origin[0] += generateRandomNumber();
+                            else
+                              origin[0] -= generateRandomNumber();
 
-                      if (generateRandomSel() > 0)
-                        origin[1] += generateRandomNumber();
-                      else
-                        origin[1] -= generateRandomNumber();
+                            if (generateRandomSel() > 0)
+                              origin[1] += generateRandomNumber();
+                            else
+                              origin[1] -= generateRandomNumber();
 
-                      if (generateRandomSel() > 0)
-                        destination[0] += generateRandomNumber();
-                      else
-                        destination[0] -= generateRandomNumber();
+                            if (generateRandomSel() > 0)
+                              destination[0] += generateRandomNumber();
+                            else
+                              destination[0] -= generateRandomNumber();
 
-                      if (generateRandomSel() > 0)
-                        destination[1] += generateRandomNumber();
-                      else
-                        destination[1] -= generateRandomNumber();
+                            if (generateRandomSel() > 0)
+                              destination[1] += generateRandomNumber();
+                            else
+                              destination[1] -= generateRandomNumber();
 
-                      // A simple line from origin to destination.
-                      var route = {
-                            "type": "FeatureCollection",
-                            "features": [{
-                                "type": "Feature",
-                                "geometry": {
-                                    "type": "LineString",
-                                    "coordinates": [
-                                      origin,
-                                      destination
-                                    ]
+                            // A simple line from origin to destination.
+                            var route = {
+                                  "type": "FeatureCollection",
+                                  "features": [{
+                                      "type": "Feature",
+                                      "geometry": {
+                                          "type": "LineString",
+                                          "coordinates": [
+                                            origin,
+                                            destination
+                                          ]
+                                        }
+                                  }]
+                            };
+
+                            var points =
+                                {
+                                  "type": "FeatureCollection",
+                                  "features": [
+                                    {
+                                      "type": "Feature",
+                                      "properties": {
+                                            "description": "Ford's Theater",
+                                            "icon": "theatre"
+                                          },
+                                      "geometry": {
+                                          "type": "Point",
+                                          "coordinates": origin
+                                          }
+                                    },
+                                    {
+                                      "type": "Feature",
+                                      "properties": {
+                                            "description": "Ford's Theater",
+                                            "icon": "theatre"
+                                          },
+                                      "geometry": {
+                                          "type": "Point",
+                                          "coordinates": destination
+                                        }
+                                    }
+                                  ]
+                            };
+
+                            map.addSource('point' + ii, {
+                              "type": "geojson",
+                              "data": points
+                            });
+
+                            map.addLayer({
+                                  "id": 'point_' + ii,
+                                  "type": "symbol",
+                                  "source": 'point' + ii,
+                                  "layout": {
+                                    "text-field": ["get", "description"],
+                                    "text-variable-anchor": ["top", "bottom", "left", "right"],
+                                    "text-radial-offset": 0.5,
+                                    "text-justify": "auto",
+                                    "icon-image": ["concat", ["get", "icon"], "-15"]
                                   }
-                            }]
-                      };
+                            });
+                            //
+                            // map.addLayer({
+                            //   "id": 'point' + ii,
+                            //   "source": 'point' + ii,
+                            //   "type": "symbol",
+                            //   "layout": {
+                            //     "icon-image": "airport-15",
+                            //     "icon-rotate": ["get", "bearing"],
+                            //     "icon-rotation-alignment": "map",
+                            //     "icon-allow-overlap": true,
+                            //     "icon-ignore-placement": true
+                            //   }
+                            // });
 
-                      var points = [
-                          {
-                            "type": "FeatureCollection",
-                            "features": [{
-                              "type": "Feature",
-                              "properties": {
-                                    "description": "Ford's Theater",
-                                    "icon": "theatre"
-                                  },
-                              "geometry": {
-                                  "type": "Point",
-                                  "coordinates": origin
+                            // map.addLayer({
+                            //   "id": 'point_' + ii,
+                            //   "source": 'point_' + ii,
+                            //   "type": "symbol",
+                            //   "layout": {
+                            //     "icon-image": "airport-15",
+                            //     "icon-rotate": ["get", "bearing"],
+                            //     "icon-rotation-alignment": "map",
+                            //     "icon-allow-overlap": true,
+                            //     "icon-ignore-placement": true
+                            //   }
+                            // });
+
+                            map.addSource('route' + ii, {
+                                "type": "geojson",
+                                "data": route
+                            });
+
+                            map.addLayer({
+                                "id": 'route_' + ii,
+                                "source": 'route' + ii,
+                                "type": "line",
+                                "paint": {
+                                  "line-width": 2,
+                                  "line-color": "#007cbf"
                                 }
-                              }]
-                          },
-                          {
-                            "type": "FeatureCollection",
-                            "features": [{
-                              "type": "Feature",
-                              "properties": {
-                                    "description": "Ford's Theater",
-                                    "icon": "theatre"
-                                  },
-                              "geometry": {
-                                  "type": "Point",
-                                  "coordinates": destination
-                                }
-                              }]
-                          }
-                    ];
-
-                      map.addSource('point' + ii, {
-                        "type": "geojson",
-                        "data": points
-                      });
-
-                      map.addLayer({
-                            "id": 'point_' + ii,
-                            "type": "symbol",
-                            "source": 'point' + ii,
-                            "layout": {
-                            "text-field": ["get", "description"],
-                            "text-variable-anchor": ["top", "bottom", "left", "right"],
-                            "text-radial-offset": 0.5,
-                            "text-justify": "auto",
-                            "icon-image": ["concat", ["get", "icon"], "-15"]
-                          }
-                      });
-                      //
-                      // map.addLayer({
-                      //   "id": 'point' + ii,
-                      //   "source": 'point' + ii,
-                      //   "type": "symbol",
-                      //   "layout": {
-                      //     "icon-image": "airport-15",
-                      //     "icon-rotate": ["get", "bearing"],
-                      //     "icon-rotation-alignment": "map",
-                      //     "icon-allow-overlap": true,
-                      //     "icon-ignore-placement": true
-                      //   }
-                      // });
-
-                      // map.addLayer({
-                      //   "id": 'point_' + ii,
-                      //   "source": 'point_' + ii,
-                      //   "type": "symbol",
-                      //   "layout": {
-                      //     "icon-image": "airport-15",
-                      //     "icon-rotate": ["get", "bearing"],
-                      //     "icon-rotation-alignment": "map",
-                      //     "icon-allow-overlap": true,
-                      //     "icon-ignore-placement": true
-                      //   }
-                      // });
-
-                      map.addSource('route' + ii, {
-                          "type": "geojson",
-                          "data": route
-                      });
-
-                      map.addLayer({
-                          "id": 'route_' + ii,
-                          "source": 'route' + ii,
-                          "type": "line",
-                          "paint": {
-                            "line-width": 2,
-                            "line-color": "#007cbf"
-                          }
-                      });
+                            });
 
 
 
