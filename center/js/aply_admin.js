@@ -95,16 +95,8 @@ function allNetworkList()
 }
 
 function generateRandomNumber() {
-    var min = 0.1,
-        max = 10.0,
-        highlightedNumber = Math.random() * (max - min) + min;
-
-    return highlightedNumber;
-};
-
-function generateRandomSel() {
-    var min = -10,
-        max = 10,
+    var min = -0.2,
+        max = 0.2,
         highlightedNumber = Math.random() * (max - min) + min;
 
     return highlightedNumber;
@@ -170,25 +162,12 @@ function onlyConnectedNetworkOnMap()
                               nodeList.push(element[1]);
                             }
 
-                            if (generateRandomSel() > 0)
-                              origin[0] += generateRandomNumber();
-                            else
-                              origin[0] -= generateRandomNumber();
 
-                            if (generateRandomSel() > 0)
-                              origin[1] += generateRandomNumber();
-                            else
-                              origin[1] -= generateRandomNumber();
+                            origin[0] += generateRandomNumber();
+                            origin[1] += generateRandomNumber();
+                            destination[0] += generateRandomNumber();
+                            destination[1] += generateRandomNumber();
 
-                            if (generateRandomSel() > 0)
-                              destination[0] += generateRandomNumber();
-                            else
-                              destination[0] -= generateRandomNumber();
-
-                            if (generateRandomSel() > 0)
-                              destination[1] += generateRandomNumber();
-                            else
-                              destination[1] -= generateRandomNumber();
 
                             // A simple line from origin to destination.
                             var route = {
