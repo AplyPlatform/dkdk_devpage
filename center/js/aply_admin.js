@@ -279,7 +279,7 @@ function isLoaded(user_uuid) {
 function addNodeToMap(user_uuid, user_nickname, imageData, lat, lng) {
 	
 	if (isLoaded(user_uuid) == true) return;
-	if (lat == null || lng == null) return;
+	if (isSet(lat) == false || isSet(lng) == false) return;
 	
 	var el;
 					
@@ -324,7 +324,7 @@ function addNodeToMap(user_uuid, user_nickname, imageData, lat, lng) {
 }
 
 function addNode(data) {	
-	addNodeToMap(data.user_uuid, data.user_nickname, data.lat, data.lng);			
+	addNodeToMap(data.user_uuid, data.user_nickname, data.imageData, data.lat, data.lng);			
 	mapNodeList.push(data);
 }
 
