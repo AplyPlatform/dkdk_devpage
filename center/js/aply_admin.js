@@ -103,8 +103,6 @@ function generateRandomNumber() {
 };
 
 var map = null;
-var mapNodeList = [];
-var mapPoints;
 
 function onlyConnectedNetworkOnMap()
 {
@@ -265,27 +263,68 @@ function onlyConnectedNetworkOnMap()
 		hideLoader();				
 }
 
-function addNodeToMap(data) {
+
+var mapNodeList = [];
+var mapPoints;
+
+function isLoaded(user_uuid) {
+	var len = mapNodeList.length;
+	for(var i=0;i<len;i++) {
+		if (mapNodeList[i].user_uuid == user_uuid) return true;
+	}
+	
+	return false;
+}
+
+function addNodeToMap(user_uuid, user_nickname, imageData, lat, lng) {
+	
+	if (isLoaded(user_uuid) == true) return;
 	
 	var el;
-	
-	if (data.imageData == null) {
+					
+	if (imageData == null) {
 		el = document.createElement('div');
-  	el.className = 'marker';
+  	el.className = 'marker';  	
 	}
   else {
   	var srcImg = "data:image/jpeg;base64,";
-		srcImg += data.imageData;
+		srcImg += imageData;
   	el = document.createElement('img');
-		el.src = srcImg;
-		el.width = el.height = "80";
-		//document.querySelector('#imageContainer').innerHTML = el.outerHTML;
+		el.src = srcImg;		
 	}
-		
+	
+	el.width = el.height = "20";
+	el.setAttribute("id", "div_" + user_uuid);
+			
   // make a marker for each feature and add to the map
   new mapboxgl.Marker(el)
-    .setLngLat([data.lng, data.lat])
+    .setLngLat([lng, lat])
     .addTo(map);  
+    
+  if (el != null) {
+		el.onclick = function () {
+			var len = mapNodeList.length;
+			for(var i=0;i<len;i++) {
+				if (mapNodeList[i].user_uuid == user_uuid) {
+					var friends = mapNodeList[i].friends;
+					if (friends == null) return;
+					
+					var flen = friends.length;
+					for(var ii=0;ii<flen;ii++) {
+						addNodeToMap(friends.user_uuid, friends.user_nickname, null, 	
+					}
+				}
+			}
+	  	  
+		};
+	}
+    
+  return ;
+}
+
+function addNode(data) {	
+	addNodeToMap(data.user_uuid, data.user_nickname, data.lat, data.lng);			
+	mapNodeList.push(data);
 }
 
 function requestNode() {
@@ -311,7 +350,7 @@ function requestNode() {
   ajaxRequest(jdata, function (r) {
     if(r.result == "success") {      
       $('#node_nickname').val("");
-      addNodeToMap(r.data);
+      addNode(r.data);
       hideLoader();
     }else {
       hideLoader();
