@@ -269,21 +269,28 @@ var mapNodeClick = [];
 var tempLat, tempLng;
 var cNodeCount = 0;
 
+function unSetClicked(user_uuid) {
+	var mlen = mapNodeClick.length;
+	for(var ii=0;ii<mlen;ii++) {
+		if (mapNodeClick[ii] == user_uuid) mapNodeClick.splice(ii,1);
+	}
+}
+
 function isLoaded(data) {
 	var len = mapNodeList.length;
 	for(var i=0;i<len;i++) {
 		if (mapNodeList[i].user_uuid == data.user_uuid) {
-			if (isSet(mapNodeList[i].friends) == true) return true;
+			if (isSet(mapNodeList[i].friends) == true) {
+				unSetClicked(data.user_uuid);
+				return true;
+			}
 			
 			mapNodeList[i]['friends'] = data.friends;
 			mapNodeList[i]['lat'] = data.lat;
 			mapNodeList[i]['lng'] = data.lng;
 			mapNodeList[i]['alt'] = data.alt;
 			
-			var mlen = mapNodeClick.length;
-			for(var ii=0;ii<mlen;ii++) {
-				if (mapNodeClick[i] == data.user_uuid) mapNodeClick.splice(i,1);
-			}
+			unSetClicked(data.user_uuid);						
 			return true;
 		}
 	}
