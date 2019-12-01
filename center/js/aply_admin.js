@@ -284,7 +284,7 @@ function addNodeToMap(user_uuid, user_nickname, imageData, lat, lng) {
 	
 	var el;
 					
-	if (isSet(imageData) == null) {
+	if (isSet(imageData) == false) {
 		el = document.createElement('div');
   	el.className = 'marker';  	
 	}
