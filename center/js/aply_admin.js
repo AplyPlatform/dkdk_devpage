@@ -325,6 +325,7 @@ function requestNode() {
     if(r.result == "success") {      
       $('#node_nickname').val("");
       addNodeToMap(r.data);
+      hideLoader();
     }else {
       hideLoader();
       alert("Node 정보 얻기에 실패하였습니다. " + r.reason);
