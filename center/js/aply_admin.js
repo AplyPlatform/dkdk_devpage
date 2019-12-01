@@ -102,6 +102,9 @@ function generateRandomNumber() {
     return highlightedNumber;
 };
 
+var map = null;
+var mapNodeList = [];
+
 function onlyConnectedNetworkOnMap()
 {
 		showLoader();
@@ -113,10 +116,12 @@ function onlyConnectedNetworkOnMap()
     
     mapboxgl.accessToken = getCookie('map_key');
     
-    var map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11'
-    });
+    if (map == null) {
+	    map = new mapboxgl.Map({
+	      container: 'map',
+	      style: 'mapbox://styles/mapbox/streets-v11'
+	    });
+	  }
 
 	  var edata = currentNetworkData;
 
@@ -258,6 +263,44 @@ function onlyConnectedNetworkOnMap()
 		hideLoader();				
 }
 
+function addNodeToMap(data) {	                              
+		var points =
+                 {
+                        "type": "FeatureCollection",
+                        "features": [
+                        	{
+                            "type": "Feature",
+                            "properties": {
+                                  "description": data.user_nickname,
+                                  "icon": "theatre"
+                                },
+                                  "geometry": {
+                                  "type": "Point",
+                                  "coordinates": [data.lng, data.lat]
+                                }
+                          }
+                        ]
+                  };           
+                  
+		map.addSource('point' + data.user_uuid, {
+                              "type": "geojson",
+                              "data": points
+									});                  
+                            
+		map.addLayer({
+                    "id": 'point_' + data.user_uuid,
+                    "type": "symbol",
+                    "source": 'point' + data.user_uuid,
+                    "layout": {
+                      "text-field": ["get", "description"],
+                      "text-variable-anchor": ["top", "bottom", "left", "right"],
+                      "text-radial-offset": 0.5,
+                      "text-justify": "auto",
+                      "icon-image": ["concat", ["get", "icon"], "-15"]
+                    }
+              });                                             
+}
+
 function requestNode() {
   showLoader();
   var token = getCookie("user_token");
@@ -281,6 +324,7 @@ function requestNode() {
   ajaxRequest(jdata, function (r) {
     if(r.result == "success") {      
       $('#node_nickname').val("");
+      addNodeToMap(r.data);
     }else {
       hideLoader();
       alert("Node 정보 얻기에 실패하였습니다. " + r.reason);
