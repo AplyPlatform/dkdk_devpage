@@ -112,6 +112,7 @@ function onlyConnectedNetworkOnMap()
     var destination = [126.8491235, 37.5650168];
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiZ3VubWFuOTciLCJhIjoiY2lvOWFpdDc5MDMxdnZpbHpocjRmMzI2ZyJ9.lnenicwIbPNDr2k7gbKLbA';
+    mapboxgl.accessToken = getCookie('map_key');
       var map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11'
@@ -290,7 +291,7 @@ function requestNode() {
   });
 }
 function initAdmin() {
-  
+  onlyConnectedNetworkOnMap();
 }
 
 

@@ -124,6 +124,7 @@ function formSubmit(token) {
       setCookie("dev_user_id", r.emailid, 1);
       setCookie("socialid", r.socialid, 1);
       setCookie("user_token", r.token, 1);
+      setCookie("map_key", r.map_key, 1);
       setCookie("device_table_uuid", r.device_table_uuid, 1);
       location.href="center.html";
     }else {
