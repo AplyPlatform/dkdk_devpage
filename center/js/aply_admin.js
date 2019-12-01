@@ -324,7 +324,9 @@ function addNodeToMap(data) {
 
 function elClickHandler(user_uuid) {
 			if (isClicked(user_uuid)) return;
-						
+			
+			mapNodeClick.push(user_uuid);
+			
 			var len = mapNodeList.length;
 			
 			var routes = [];
@@ -334,7 +336,9 @@ function elClickHandler(user_uuid) {
 					if (friends == null) return;
 					
 					var flen = friends.length;
-					for(var ii=0;ii<flen;ii++) {						
+					for(var ii=0;ii<flen;ii++) {
+						if (friends[ii].user_uuid == user_uuid) continue;
+						
 						var tLat = tempLat + generateRandomNumber();
 						var tLng = tempLng + generateRandomNumber();
 						var nData = friends[ii];
@@ -355,6 +359,8 @@ function elClickHandler(user_uuid) {
 				}
 			}
 			
+			if (routes.length <= 0) return;
+			
 			var route = {
               "type": "FeatureCollection",
               "features": routes
@@ -373,9 +379,7 @@ function elClickHandler(user_uuid) {
             "line-width": 2,
             "line-color": "#007cbf"
           }
-      });
-      
-      mapNodeClick.push(user_uuid);
+      });            
 }
 
 function addNode(data) {	
