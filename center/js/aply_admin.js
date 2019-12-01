@@ -267,6 +267,7 @@ function onlyConnectedNetworkOnMap()
 var mapNodeList = [];
 var mapNodeClick = [];
 var tempLat, tempLng;
+var cNodeCount = 0;
 
 function isLoaded(data) {
 	var len = mapNodeList.length;
@@ -325,17 +326,15 @@ function addNodeToMap(data) {
 	
 	el.width = el.height = "20";
 	el.setAttribute("id", "div_" + data.user_uuid);
+	el.onclick = function () {
+		elClickHandler(data.user_uuid);		  	  
+	};
 			
   // make a marker for each feature and add to the map
   new mapboxgl.Marker(el)
     .setLngLat([data.lng, data.lat])
     .addTo(map);  
-    
-  if (el != null) {
-		el.onclick = function () {
-			elClickHandler(data.user_uuid);		  	  
-		};
-	}
+
 }
 
 function elClickHandler(user_uuid) {
@@ -382,20 +381,22 @@ function elClickHandler(user_uuid) {
               "features": routes
       };
 		
-			map.addSource('route', {
+			map.addSource('route' + cNodeCount, {
           "type": "geojson",
           "data": route
       });
       
       map.addLayer({
-          "id": 'route_',
-          "source": 'route',
+          "id": 'route_' + cNodeCount,
+          "source": 'route' + cNodeCount,
           "type": "line",
           "paint": {
             "line-width": 2,
             "line-color": "#007cbf"
           }
-      });            
+      });  
+      
+      cNodeCount++;          
 }
 
 function addNode(data) {	
