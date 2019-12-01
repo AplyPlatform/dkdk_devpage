@@ -280,7 +280,7 @@ function isLoaded(user_uuid) {
 function isClicked(user_uuid) {
 	var len = mapNodeClick.length;
 	for(var i=0;i<len;i++) {
-		if (mapNodeClick[i].user_uuid == user_uuid) return true;
+		if (mapNodeClick[i] == user_uuid) return true;
 	}
 	
 	return false;
