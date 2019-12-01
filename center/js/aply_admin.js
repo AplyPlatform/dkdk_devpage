@@ -268,10 +268,23 @@ var mapNodeList = [];
 var mapNodeClick = [];
 var tempLat, tempLng;
 
-function isLoaded(user_uuid) {
+function isLoaded(data) {
 	var len = mapNodeList.length;
 	for(var i=0;i<len;i++) {
-		if (mapNodeList[i].user_uuid == user_uuid) return true;
+		if (mapNodeList[i].user_uuid == data.user_uuid) {
+			if (isSet(mapNodeList[i].friends) == true) return true;
+			
+			mapNodeList[i]['friends'] = data.friends;
+			mapNodeList[i]['lat'] = data.lat;
+			mapNodeList[i]['lng'] = data.lng;
+			mapNodeList[i]['alt'] = data.alt;
+			
+			var mlen = mapNodeClick.length;
+			for(var ii=0;ii<mlen;ii++) {
+				if (mapNodeClick[i] == data.user_uuid) mapNodeClick.splice(i,1);
+			}
+			return true;
+		}
 	}
 	
 	return false;
@@ -288,7 +301,10 @@ function isClicked(user_uuid) {
 
 function addNodeToMap(data) {
 	
-	if (isLoaded(data.user_uuid) == true) return;
+	if (isLoaded(data) == true) {		 
+		 return;
+	}
+	
 	mapNodeList.push(data);
 	
 	if (isSet(data.lat) == false || isSet(data.lng) == false) return;
