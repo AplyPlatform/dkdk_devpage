@@ -265,10 +265,23 @@ function onlyConnectedNetworkOnMap()
 		hideLoader();				
 }
 
-function addNodeToMap(data) {	                              
-	var el = document.createElement('div');
-  el.className = 'marker';
-
+function addNodeToMap(data) {
+	
+	var el;
+	
+	if (data.imageData == null) {
+		el = document.createElement('div');
+  	el.className = 'marker';
+	}
+  else {
+  	var srcImg = "data:image/jpeg;base64,";
+		srcImg += data.imageData;
+  	el = document.createElement('img');
+		el.src = src;
+		el.width = el.height = "80";
+		//document.querySelector('#imageContainer').innerHTML = el.outerHTML;
+	}
+		
   // make a marker for each feature and add to the map
   new mapboxgl.Marker(el)
     .setLngLat([data.lng, data.lat])
