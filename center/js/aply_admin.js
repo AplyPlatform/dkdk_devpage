@@ -277,7 +277,7 @@ function addNodeToMap(data) {
   	var srcImg = "data:image/jpeg;base64,";
 		srcImg += data.imageData;
   	el = document.createElement('img');
-		el.src = src;
+		el.src = srcImg;
 		el.width = el.height = "80";
 		//document.querySelector('#imageContainer').innerHTML = el.outerHTML;
 	}
