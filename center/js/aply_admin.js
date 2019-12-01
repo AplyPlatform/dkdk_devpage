@@ -279,6 +279,7 @@ function isLoaded(user_uuid) {
 function addNodeToMap(user_uuid, user_nickname, imageData, lat, lng) {
 	
 	if (isLoaded(user_uuid) == true) return;
+	if (lat == null || lng == null) return;
 	
 	var el;
 					
