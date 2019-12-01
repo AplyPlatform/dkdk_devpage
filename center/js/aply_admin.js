@@ -305,8 +305,16 @@ function addNodeToMap(user_uuid, user_nickname, imageData, lat, lng) {
     .addTo(map);  
     
   if (el != null) {
-		el.onclick = function () {
+		el.onclick = function () {			
+			elClickHandler(user_uuid);		  	  
+		};
+	}
+}
+
+function elClickHandler(user_uuid) {
 			var len = mapNodeList.length;
+			
+			var routes = [];
 			for(var i=0;i<len;i++) {
 				if (mapNodeList[i].user_uuid == user_uuid) {
 					var friends = mapNodeList[i].friends;
@@ -314,15 +322,39 @@ function addNodeToMap(user_uuid, user_nickname, imageData, lat, lng) {
 					
 					var flen = friends.length;
 					for(var ii=0;ii<flen;ii++) {						
-						addNodeToMap(friends[ii].user_uuid, friends[ii].user_nickname, friends[ii].imageData, tempLat + generateRandomNumber(), tempLng + generateRandomNumber()); 	
+						var tLat = tempLat + generateRandomNumber();
+						var tLng = tempLng + generateRandomNumber();
+						addNodeToMap(friends[ii].user_uuid, friends[ii].user_nickname, friends[ii].imageData, tLat, tLng);
+						routes.push([ [tempLng, tempLat], [tLng, tLat] ]);
 					}
 				}
 			}
-	  	  
-		};
-	}
-    
-  return ;
+			
+			var route = {
+              "type": "FeatureCollection",
+              "features": [{
+                  "type": "Feature",
+                  "geometry": {
+                      "type": "LineString",
+                      "coordinates": routes
+                    }
+              }]
+        };
+		
+			map.addSource('route', {
+          "type": "geojson",
+          "data": route
+      });
+      
+      map.addLayer({
+          "id": 'route_',
+          "source": 'route',
+          "type": "line",
+          "paint": {
+            "line-width": 2,
+            "line-color": "#007cbf"
+          }
+      });
 }
 
 function addNode(data) {	
