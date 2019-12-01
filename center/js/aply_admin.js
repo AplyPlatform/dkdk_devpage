@@ -1,4 +1,4 @@
-
+ï»¿
 var currentNetworkData;
 function getUserNetwork() {
     var token = getCookie("user_token");
@@ -265,7 +265,7 @@ function requestNode() {
   var node_nickname = $('#node_nickname').val();
 
   if (node_nickname == "") {
-	   alert("»ç¿ëÀÚÀÇ ÀÌ¸§À» ÀÔ·ÂÇØ ÁÖ¼¼¿ä");
+	   alert("ì‚¬ìš©ìì˜ ì´ë¦„ì„ ì…ë ¥í•´ ì£¼ì„¸ìš”");
      hideLoader();
 	   return;
   }
@@ -283,7 +283,7 @@ function requestNode() {
       $('#node_nickname').val("");
     }else {
       hideLoader();
-      alert("Node Á¤º¸ ¾ò±â¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù. " + r.reason);
+      alert("Node ì •ë³´ ì–»ê¸°ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤. " + r.reason);
     }
   }, function(request, status, error) {
     hideLoader();
