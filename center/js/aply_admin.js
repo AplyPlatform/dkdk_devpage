@@ -355,12 +355,14 @@ function elClickHandler(user_uuid) {
 						if (friends[ii].user_uuid == user_uuid) continue;
 												
 						var nData = friends[ii];
+						var tLat, tLng;
 						if (isSet(nData.lat) && isSet(nData.lng)) {
-								
+							tLat = nData.lat;
+							tLng = nData.lng;
 						}
 						else {
-							var tLat = tempLat + generateRandomNumber();
-							var tLng = tempLng + generateRandomNumber();
+							tLat = tempLat + generateRandomNumber();
+							tLng = tempLng + generateRandomNumber();
 							
 							nData['lat'] = tLat;
 							nData['lng'] = tLng;
