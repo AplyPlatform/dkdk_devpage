@@ -292,6 +292,7 @@ function addNodeToMap(user_uuid, user_nickname, imageData, lat, lng) {
   	var srcImg = "data:image/jpeg;base64,";
 		srcImg += imageData;
   	el = document.createElement('img');
+  	el.className = 'markerImage';
 		el.src = srcImg;		
 	}
 	
@@ -312,9 +313,8 @@ function addNodeToMap(user_uuid, user_nickname, imageData, lat, lng) {
 					if (friends == null) return;
 					
 					var flen = friends.length;
-					for(var ii=0;ii<flen;ii++) {
-						
-						addNodeToMap(friends.user_uuid, friends.user_nickname, friends.imageData, tempLat + generateRandomNumber(), tempLng + generateRandomNumber()); 	
+					for(var ii=0;ii<flen;ii++) {						
+						addNodeToMap(friends[ii].user_uuid, friends[ii].user_nickname, friends[ii].imageData, tempLat + generateRandomNumber(), tempLng + generateRandomNumber()); 	
 					}
 				}
 			}
