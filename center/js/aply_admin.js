@@ -265,7 +265,7 @@ function onlyConnectedNetworkOnMap()
 
 
 var mapNodeList = [];
-var mapPoints;
+var mapNodeClick = [];
 var tempLat, tempLng;
 
 function isLoaded(user_uuid) {
@@ -277,41 +277,54 @@ function isLoaded(user_uuid) {
 	return false;
 }
 
-function addNodeToMap(user_uuid, user_nickname, imageData, lat, lng) {
+function isClicked(user_uuid) {
+	var len = mapNodeClick.length;
+	for(var i=0;i<len;i++) {
+		if (mapNodeClick[i].user_uuid == user_uuid) return true;
+	}
 	
-	if (isLoaded(user_uuid) == true) return;
-	if (isSet(lat) == false || isSet(lng) == false) return;
+	return false;
+}
+
+function addNodeToMap(data) {
+	
+	if (isLoaded(data.user_uuid) == true) return;
+	mapNodeList.push(data);
+	
+	if (isSet(data.lat) == false || isSet(data.lng) == false) return;
 	
 	var el;
 					
-	if (isSet(imageData) == false) {
+	if (isSet(data.imageData) == false) {
 		el = document.createElement('div');
   	el.className = 'marker';  	
 	}
   else {
   	var srcImg = "data:image/jpeg;base64,";
-		srcImg += imageData;
+		srcImg += data.imageData;
   	el = document.createElement('img');
   	el.className = 'markerImage';
 		el.src = srcImg;		
 	}
 	
 	el.width = el.height = "20";
-	el.setAttribute("id", "div_" + user_uuid);
+	el.setAttribute("id", "div_" + data.user_uuid);
 			
   // make a marker for each feature and add to the map
   new mapboxgl.Marker(el)
-    .setLngLat([lng, lat])
+    .setLngLat([data.lng, data.lat])
     .addTo(map);  
     
   if (el != null) {
-		el.onclick = function () {			
-			elClickHandler(user_uuid);		  	  
+		el.onclick = function () {
+			elClickHandler(data.user_uuid);		  	  
 		};
 	}
 }
 
 function elClickHandler(user_uuid) {
+			if (isClicked(user_uuid)) return;
+						
 			var len = mapNodeList.length;
 			
 			var routes = [];
@@ -324,22 +337,28 @@ function elClickHandler(user_uuid) {
 					for(var ii=0;ii<flen;ii++) {						
 						var tLat = tempLat + generateRandomNumber();
 						var tLng = tempLng + generateRandomNumber();
-						addNodeToMap(friends[ii].user_uuid, friends[ii].user_nickname, friends[ii].imageData, tLat, tLng);
-						routes.push([ [tempLng, tempLat], [tLng, tLat] ]);
+						var nData = friends[ii];
+						nData['lat'] = tLat;
+						nData['lng'] = tLng;
+						
+						addNodeToMap(nData);
+						
+						var rt = {
+                  "type": "Feature",
+                  "geometry": {
+                      "type": "LineString",
+                      "coordinates": [[tempLng, tempLat], [tLng, tLat]]
+                    }
+            };
+						routes.push(rt);
 					}
 				}
 			}
 			
 			var route = {
               "type": "FeatureCollection",
-              "features": [{
-                  "type": "Feature",
-                  "geometry": {
-                      "type": "LineString",
-                      "coordinates": routes
-                    }
-              }]
-        };
+              "features": routes
+      };
 		
 			map.addSource('route', {
           "type": "geojson",
@@ -355,12 +374,13 @@ function elClickHandler(user_uuid) {
             "line-color": "#007cbf"
           }
       });
+      
+      mapNodeClick.push(user_uuid);
 }
 
 function addNode(data) {	
 	tempLat = data.lat; tempLng = data.lng;
-	addNodeToMap(data.user_uuid, data.user_nickname, data.imageData, data.lat, data.lng);			
-	mapNodeList.push(data);
+	addNodeToMap(data);	
 }
 
 function requestNode() {
