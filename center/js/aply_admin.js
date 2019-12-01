@@ -353,13 +353,19 @@ function elClickHandler(user_uuid) {
 					var flen = friends.length;
 					for(var ii=0;ii<flen;ii++) {
 						if (friends[ii].user_uuid == user_uuid) continue;
-						
-						var tLat = tempLat + generateRandomNumber();
-						var tLng = tempLng + generateRandomNumber();
+												
 						var nData = friends[ii];
-						nData['lat'] = tLat;
-						nData['lng'] = tLng;
-						
+						if (isSet(nData.lat) && isSet(nData.lng)) {
+								
+						}
+						else {
+							var tLat = tempLat + generateRandomNumber();
+							var tLng = tempLng + generateRandomNumber();
+							
+							nData['lat'] = tLat;
+							nData['lng'] = tLng;
+						}
+												
 						addNodeToMap(nData);
 						
 						var rt = {
