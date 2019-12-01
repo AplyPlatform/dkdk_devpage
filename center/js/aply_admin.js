@@ -104,6 +104,7 @@ function generateRandomNumber() {
 
 var map = null;
 var mapNodeList = [];
+var mapPoints;
 
 function onlyConnectedNetworkOnMap()
 {
@@ -122,6 +123,7 @@ function onlyConnectedNetworkOnMap()
 	      style: 'mapbox://styles/mapbox/streets-v11'
 	    });
 	  }
+	  	               
 
 	  var edata = currentNetworkData;
 
@@ -264,41 +266,13 @@ function onlyConnectedNetworkOnMap()
 }
 
 function addNodeToMap(data) {	                              
-		var points =
-                 {
-                        "type": "FeatureCollection",
-                        "features": [
-                        	{
-                            "type": "Feature",
-                            "properties": {
-                                  "description": data.user_nickname,
-                                  "icon": "theatre"
-                                },
-                                  "geometry": {
-                                  "type": "Point",
-                                  "coordinates": [data.lng, data.lat]
-                                }
-                          }
-                        ]
-                  };           
-                  
-		map.addSource('point' + data.user_uuid, {
-                              "type": "geojson",
-                              "data": points
-									});                  
-                            
-		map.addLayer({
-                    "id": 'point_' + data.user_uuid,
-                    "type": "symbol",
-                    "source": 'point' + data.user_uuid,
-                    "layout": {
-                      "text-field": ["get", "description"],
-                      "text-variable-anchor": ["top", "bottom", "left", "right"],
-                      "text-radial-offset": 0.5,
-                      "text-justify": "auto",
-                      "icon-image": ["concat", ["get", "icon"], "-15"]
-                    }
-              });                                             
+	var el = document.createElement('div');
+  el.className = 'marker';
+
+  // make a marker for each feature and add to the map
+  new mapboxgl.Marker(el)
+    .setLngLat([data.lng, data.lat])
+    .addTo(map);  
 }
 
 function requestNode() {
