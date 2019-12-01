@@ -266,6 +266,7 @@ function onlyConnectedNetworkOnMap()
 
 var mapNodeList = [];
 var mapPoints;
+var tempLat, tempLng;
 
 function isLoaded(user_uuid) {
 	var len = mapNodeList.length;
@@ -312,7 +313,8 @@ function addNodeToMap(user_uuid, user_nickname, imageData, lat, lng) {
 					
 					var flen = friends.length;
 					for(var ii=0;ii<flen;ii++) {
-						addNodeToMap(friends.user_uuid, friends.user_nickname, friends.imageData, friends.lat, friends.lng); 	
+						
+						addNodeToMap(friends.user_uuid, friends.user_nickname, friends.imageData, tempLat + generateRandomNumber(), tempLng + generateRandomNumber()); 	
 					}
 				}
 			}
@@ -324,6 +326,7 @@ function addNodeToMap(user_uuid, user_nickname, imageData, lat, lng) {
 }
 
 function addNode(data) {	
+	tempLat = data.lat; tempLng = data.lng;
 	addNodeToMap(data.user_uuid, data.user_nickname, data.imageData, data.lat, data.lng);			
 	mapNodeList.push(data);
 }
