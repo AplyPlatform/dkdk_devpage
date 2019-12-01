@@ -148,17 +148,30 @@ gtag('config', 'UA-130136264-5');
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            관계도
-
-                            <a class="btn btn-primary btn-lg active" role="button" onClick="onlyConnectedNetworkList()">연결된 Nodes</a> &nbsp; &nbsp;
-                            <a class="btn btn-primary btn-lg active" role="button" onClick="allNetworkList()">전체 Nodes</a>
+                            Admin viewer    
                         </div>
                     </div>
 
-                    <div class="panel-body" id="map" style="height: 1024px; width: 100%;">
+										<div class="panel-body" id="getNodeForm">
+                            <div>
+                              <label for="node_nickname">사용자의 닉네임</label>
+                              <input name="node_nickname" id="node_nickname" type="text" class="form-control" value="" placeholder="사용자의 닉네임을 입력해 주세요. ex) dkdk1004" required=""><br>
+                            </div>
+
+                            <div>
+                              <a class="btn btn-primary btn-lg active" role="button" onClick="requestNode()">읽어오기</a>
+                              <hr size=1 color=#555>
+                            </div>
+                    </div>
+                    <div class="panel-body" id="map" style="height: 800px; width: 95%;">
                     </div>
 
+										<div class="panel-body">
+												<a class="btn btn-primary btn-lg active" role="button" onClick="onlyConnectedNetworkList()">연결된 Nodes</a> &nbsp; &nbsp;
+                      	<a class="btn btn-primary btn-lg active" role="button" onClick="allNetworkList()">전체 Nodes</a>
+                    </div>
                     <div class="panel-body" id="usernetwork" style="height: 1024px; width: 100%;">
+                    	
                     </div>
                 </div>
             </div>

@@ -14,9 +14,7 @@ function getUserNetwork() {
       if(r.result == "success") {
         if (r.data.length > 0) {
         	currentNetworkData = r.data;
-        	hideLoader();
-        	onlyConnectedNetworkList();
-          onlyConnectedNetworkOnMap();
+        	hideLoader();        	
         }
         else {
           hideLoader();
@@ -39,8 +37,9 @@ function onlyConnectedNetworkList()
 	  var edata = currentNetworkData;
 
 	  if (edata == null) {
-	  	alert("Empty");
+	  	alert("Data is preparing, Please, try again.");
 	  	hideLoader();
+	  	getUserNetwork();
 	  	return;
 	  }
 
@@ -71,8 +70,9 @@ function allNetworkList()
 	  var edata = currentNetworkData;
 
 	  if (edata == null) {
-	  	alert("Empty");
+	  	alert("Data is preparing, Please, try again.");
 	  	hideLoader();
+	  	getUserNetwork();
 	  	return;
 	  }
 
@@ -107,7 +107,7 @@ function onlyConnectedNetworkOnMap()
 		showLoader();
 
         // San Francisco
-    var origin = [-122.414, 37.776];
+    var origin = [126.8891235, 37.5654168];
     // Washington DC
     var destination = [126.8491235, 37.5650168];
 
@@ -191,25 +191,7 @@ function onlyConnectedNetworkOnMap()
                               });
                             }
 
-
-
-
-
-                            // A simple line from origin to destination.
-                            var route = {
-                                  "type": "FeatureCollection",
-                                  "features": [{
-                                      "type": "Feature",
-                                      "geometry": {
-                                          "type": "LineString",
-                                          "coordinates": [
-                                            origin,
-                                            destination
-                                          ]
-                                        }
-                                  }]
-                            };
-
+                            
                             var points =
                                 {
                                   "type": "FeatureCollection",
@@ -233,38 +215,27 @@ function onlyConnectedNetworkOnMap()
                                     "icon-image": ["concat", ["get", "icon"], "-15"]
                                   }
                             });
-                            //
-                            // map.addLayer({
-                            //   "id": 'point' + ii,
-                            //   "source": 'point' + ii,
-                            //   "type": "symbol",
-                            //   "layout": {
-                            //     "icon-image": "airport-15",
-                            //     "icon-rotate": ["get", "bearing"],
-                            //     "icon-rotation-alignment": "map",
-                            //     "icon-allow-overlap": true,
-                            //     "icon-ignore-placement": true
-                            //   }
-                            // });
-
-                            // map.addLayer({
-                            //   "id": 'point_' + ii,
-                            //   "source": 'point_' + ii,
-                            //   "type": "symbol",
-                            //   "layout": {
-                            //     "icon-image": "airport-15",
-                            //     "icon-rotate": ["get", "bearing"],
-                            //     "icon-rotation-alignment": "map",
-                            //     "icon-allow-overlap": true,
-                            //     "icon-ignore-placement": true
-                            //   }
-                            // });
-
-                            map.addSource('route' + ii, {
+                            
+                            // A simple line from origin to destination.
+                            var route = {
+                                  "type": "FeatureCollection",
+                                  "features": [{
+                                      "type": "Feature",
+                                      "geometry": {
+                                          "type": "LineString",
+                                          "coordinates": [
+                                            origin,
+                                            destination
+                                          ]
+                                        }
+                                  }]
+                            };
+												
+														map.addSource('route' + ii, {
                                 "type": "geojson",
                                 "data": route
                             });
-
+                            
                             map.addLayer({
                                 "id": 'route_' + ii,
                                 "source": 'route' + ii,
@@ -283,11 +254,43 @@ function onlyConnectedNetworkOnMap()
 
     });
 
-		hideLoader();
+		hideLoader();				
 }
 
+function requestNode() {
+  showLoader();
+  var token = getCookie("user_token");
+  var emailid = getCookie("dev_user_id");
+  var node_nickname = $('#node_nickname').val();
+
+  if (node_nickname == "") {
+	   alert("사용자의 이름을 입력해 주세요");
+     hideLoader();
+	   return;
+  }
+
+  
+  var jdata = {"daction": "admin_get_node",
+    "node_nickname" : node_nickname,
+    "emailid" : emailid,
+    "token" : token,
+    "action" : "developer"
+  };
+
+  ajaxRequest(jdata, function (r) {
+    if(r.result == "success") {      
+      $('#node_nickname').val("");
+    }else {
+      hideLoader();
+      alert("Node 정보 얻기에 실패하였습니다. " + r.reason);
+    }
+  }, function(request, status, error) {
+    hideLoader();
+    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+  });
+}
 function initAdmin() {
-  getUserNetwork();
+  
 }
 
 
