@@ -331,7 +331,7 @@ function addNodeToMap(data) {
 		el.src = srcImg;		
 	}
 	
-	el.width = el.height = "20";
+	el.width = el.height = "60";
 	el.setAttribute("id", "div_" + data.user_uuid);
 	el.onclick = function () {
 		elClickHandler(data.user_uuid);		  	  
