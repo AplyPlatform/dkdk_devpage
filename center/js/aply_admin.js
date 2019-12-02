@@ -404,12 +404,18 @@ function elClickHandler(user_nickname, user_uuid) {
 
 function addNode(data, callback) {
   // 임시조치!! ------------[]
-
   if (isSet(data.lat) == false) {
-    tempLat = 37.5650168 + generateRandomNumber();
-    tempLng = 126.8491235 + generateRandomNumber();
-    data.lat = tempLat;
-    data.lng = tempLng;
+    var node = getNodeOnMap(data.user_uuid);
+    if (node != null) {
+      data.lat = node.lat;
+      data.lng = node.lng;
+    }
+    else {
+      tempLat = 37.5650168 + generateRandomNumber();
+      tempLng = 126.8491235 + generateRandomNumber();
+      data.lat = tempLat;
+      data.lng = tempLng;
+    }
   }
 
   if (data.friends != null) {
