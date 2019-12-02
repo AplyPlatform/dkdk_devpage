@@ -361,6 +361,7 @@ function drawLineToFriend(user_uuid, oLat, oLng, friends) {
 }
 
 function getNode(user_uuid) {
+  var len = nodeNodeList.length;
   for(var i=0;i<len;i++) {
     if (nodeNodeList[i].user_uuid == user_uuid) {
       return nodeNodeList[i];
