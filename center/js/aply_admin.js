@@ -378,6 +378,11 @@ function elClickHandler(user_nickname, user_uuid) {
         return;
       }
 
+      if (isSet(node.lat) == false) {
+        node.lat = tempLat;
+        node.lng = tempLng;
+      }
+
       var routes = drawLineToFriend(node.user_uuid, node.lat, node.lng, node.friends);
 			if (routes == null || routes.length <= 0) return;
 
@@ -407,6 +412,9 @@ function elClickHandler(user_nickname, user_uuid) {
 function addNode(data, callback) {
   if (getNode(data.user_uuid) == null)
     nodeNodeList.push(data);
+
+  tempLat = 37.5650168 + generateRandomNumber();
+  tempLng = 126.8491235 + generateRandomNumber();
 
   addNodeToMap(data);
 
@@ -458,7 +466,5 @@ function realRequestNode(node_nickname, callback) {
 function initAdmin() {
   onlyConnectedNetworkOnMap();
 }
-
-
 
 initAdmin();
