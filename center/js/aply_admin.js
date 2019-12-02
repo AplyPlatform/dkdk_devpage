@@ -268,21 +268,21 @@ var mapNodeList = [];
 var tempLat, tempLng;
 var cNodeCount = 0;
 
-function isNodeOnMap(user_uuid) {
+function getNodeOnMap(user_uuid) {
 	var len = mapNodeList.length;
 	for(var i=0;i<len;i++) {
-		if (mapNodeList[i] == user_uuid)
-        return true;
+		if (mapNodeList[i].user_uuid == user_uuid)
+        return mapNodeList[i];
 	}
 
-	return false;
+	return null;
 }
 
 function addNodeToMap(data) {
 
-	if (isNodeOnMap(data.user_uuid) == true) return;
+	if (getNodeOnMap(data.user_uuid) != null) return;
 
-	mapNodeList.push(data.user_uuid);
+	mapNodeList.push(data);
 	if (isSet(data.lat) == false || isSet(data.lng) == false) return;
 
 	var el = document.createElement('div');
@@ -332,18 +332,11 @@ function drawLineToFriend(user_uuid, oLat, oLng, friends) {
     if (friends[i].user_uuid == user_uuid) continue;
 
     var nData = friends[i];
-    var tLat, tLng;
-    if (isSet(nData.lat) && isSet(nData.lng)) {
-      tLat = nData.lat;
-      tLng = nData.lng;
-    }
-    else {
-      tLat = oLat + generateRandomNumber();
-      tLng = oLng + generateRandomNumber();
 
-      nData['lat'] = tLat;
-      nData['lng'] = tLng;
-    }
+    if (isSet(nData.lat) == false) continue;
+
+    var tLat = nData.lat;
+    var tLng = nData.lng;
 
     addNodeToMap(nData);
 
@@ -354,6 +347,7 @@ function drawLineToFriend(user_uuid, oLat, oLng, friends) {
               "coordinates": [[oLng, oLat], [tLng, tLat]]
             }
     };
+
     routes.push(rt);
   }
 
@@ -379,8 +373,7 @@ function elClickHandler(user_nickname, user_uuid) {
       }
 
       if (isSet(node.lat) == false) {
-        node.lat = tempLat;
-        node.lng = tempLng;
+        return;
       }
 
       var routes = drawLineToFriend(node.user_uuid, node.lat, node.lng, node.friends);
@@ -410,11 +403,34 @@ function elClickHandler(user_nickname, user_uuid) {
 }
 
 function addNode(data, callback) {
+  // 임시조치!! ------------[]
+
+  if (isSet(data.lat) == false) {
+    tempLat = 37.5650168 + generateRandomNumber();
+    tempLng = 126.8491235 + generateRandomNumber();
+    data.lat = tempLat;
+    data.lng = tempLng;
+
+    if (data.friends != null) {
+      var len = data.friends.length;
+      for(var i=0;i<len;i++) {
+        var mNode = getNodeOnMap(data.friends[i].user_uuid);
+        if (mNode != null) {
+          data.friends[i].lat = mNode.lat;
+          data.friends[i].lng = mNode.lng;
+        }
+        else {
+          data.friends[i].lat = 37.5650168 + generateRandomNumber();
+          data.friends[i].lng = 126.8491235 + generateRandomNumber();
+        }
+      }
+    }
+  }
+
+  // ]------------------------
+
   if (getNode(data.user_uuid) == null)
     nodeNodeList.push(data);
-
-  tempLat = 37.5650168 + generateRandomNumber();
-  tempLng = 126.8491235 + generateRandomNumber();
 
   addNodeToMap(data);
 
