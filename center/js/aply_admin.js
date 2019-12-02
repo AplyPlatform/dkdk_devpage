@@ -440,6 +440,10 @@ function addNode(data, callback) {
 
   addNodeToMap(data);
 
+  map.flyTo({
+    center: [data.lng, data.lat]
+  });
+
   if (callback == null) return;
 
   callback(data.user_nickname, data.user_uuid);
