@@ -313,7 +313,7 @@ function addNodeToMap(data) {
 	el.width = el.height = "60";
 	el.setAttribute("id", "div_" + data.user_uuid);
 	el.onclick = function () {
-		elClickHandler(data.user_uuid);
+		elClickHandler(data.user_nickname, data.user_uuid);
 	};
 
   // make a marker for each feature and add to the map
@@ -371,10 +371,10 @@ function getNode(user_uuid) {
   return null;
 }
 
-function elClickHandler(user_uuid) {
+function elClickHandler(user_nickname, user_uuid) {
       var node = getNode(user_uuid);
 			if (node == null) {
-        realRequestNode(node.user_nickname, elClickHandler);
+        realRequestNode(user_nickname, elClickHandler);
         return;
       }
 
@@ -412,7 +412,7 @@ function addNode(data, callback) {
 
   if (callback == null) return;
 
-  callback(data.user_uuid);
+  callback(data.user_nickname, data.user_uuid);
 }
 
 function requestNode() {
