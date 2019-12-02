@@ -14,7 +14,7 @@ function getUserNetwork() {
       if(r.result == "success") {
         if (r.data.length > 0) {
         	currentNetworkData = r.data;
-        	hideLoader();        	
+        	hideLoader();
         }
         else {
           hideLoader();
@@ -112,16 +112,16 @@ function onlyConnectedNetworkOnMap()
     var origin = [126.8891235, 37.5654168];
     // Washington DC
     var destination = [126.8491235, 37.5650168];
-    
+
     mapboxgl.accessToken = getCookie('map_key');
-    
+
     if (map == null) {
 	    map = new mapboxgl.Map({
 	      container: 'map',
 	      style: 'mapbox://styles/mapbox/streets-v11'
 	    });
 	  }
-	  	               
+
 
 	  var edata = currentNetworkData;
 
@@ -196,7 +196,7 @@ function onlyConnectedNetworkOnMap()
                               });
                             }
 
-                            
+
                             var points =
                                 {
                                   "type": "FeatureCollection",
@@ -220,7 +220,7 @@ function onlyConnectedNetworkOnMap()
                                     "icon-image": ["concat", ["get", "icon"], "-15"]
                                   }
                             });
-                            
+
                             // A simple line from origin to destination.
                             var route = {
                                   "type": "FeatureCollection",
@@ -235,12 +235,12 @@ function onlyConnectedNetworkOnMap()
                                         }
                                   }]
                             };
-												
+
 														map.addSource('route' + ii, {
                                 "type": "geojson",
                                 "data": route
                             });
-                            
+
                             map.addLayer({
                                 "id": 'route_' + ii,
                                 "source": 'route' + ii,
@@ -259,157 +259,137 @@ function onlyConnectedNetworkOnMap()
 
     });
 
-		hideLoader();				
+		hideLoader();
 }
 
 
+var nodeNodeList = [];
 var mapNodeList = [];
-var mapNodeClick = [];
 var tempLat, tempLng;
 var cNodeCount = 0;
 
-function unSetClicked(user_uuid) {
-	var mlen = mapNodeClick.length;
-	for(var ii=0;ii<mlen;ii++) {
-		if (mapNodeClick[ii] == user_uuid) mapNodeClick.splice(ii,1);
-	}
-}
-
-function isLoaded(data) {
+function isNodeOnMap(user_uuid) {
 	var len = mapNodeList.length;
 	for(var i=0;i<len;i++) {
-		if (mapNodeList[i].user_uuid == data.user_uuid) {
-			if (isSet(mapNodeList[i].friends) == true) {
-				unSetClicked(data.user_uuid);
-				return true;
-			}
-			
-			mapNodeList[i]['friends'] = data.friends;
-			mapNodeList[i]['lat'] = data.lat;
-			mapNodeList[i]['lng'] = data.lng;
-			mapNodeList[i]['alt'] = data.alt;
-			
-			unSetClicked(data.user_uuid);						
-			return true;
-		}
+		if (mapNodeList[i] == user_uuid)
+        return true;
 	}
-	
-	return false;
-}
 
-function isClicked(user_uuid) {
-	var len = mapNodeClick.length;
-	for(var i=0;i<len;i++) {
-		if (mapNodeClick[i] == user_uuid) return true;
-	}
-	
 	return false;
 }
 
 function addNodeToMap(data) {
-	
-	if (isLoaded(data) == true) {		 
-		 return;
-	}
-	
-	mapNodeList.push(data);
-	
+
+	if (isNodeOnMap(data.user_uuid) == true) return;
+
+	mapNodeList.push(data.user_uuid);
 	if (isSet(data.lat) == false || isSet(data.lng) == false) return;
-	
+
 	var el = document.createElement('div');
-	var container = document.createElement("span");
-        var textel;
-        var ap;
+  var textel;
+  var ap;
+
 	if (isSet(data.imageData) == false) {
-		ap = document.createElement('div');
-  		ap.className = 'marker';  	
-		ap.title = data.user_nickname;
-		textel = document.createTextNode(data.user_nickname);
+  		ap = document.createElement('div');
+    	ap.className = 'marker';
+  		ap.title = data.user_nickname;
+  		textel = document.createTextNode(data.user_nickname);
 	}
   else {
-  	var srcImg = "data:image/jpeg;base64,";
-		srcImg += data.imageData;
+    	var srcImg = "data:image/jpeg;base64,";
+  		srcImg += data.imageData;
   		ap = document.createElement('img');
   		ap.className = 'markerImage';
-		ap.src = srcImg;
-		ap.setAttribute('alt', data.user_nickname);
-		textel = document.createTextNode(data.user_nickname);
+  		ap.src = srcImg;
+  		ap.setAttribute('alt', data.user_nickname);
+  		textel = document.createTextNode(data.user_nickname);
 	}
-	
-        container.style.color = "red";
+
+  var container = document.createElement("span");
+  container.style.color = "red";
 	container.appendChild(textel);
 	el.appendChild(container);
 	el.appendChild(ap);
 	el.width = el.height = "60";
 	el.setAttribute("id", "div_" + data.user_uuid);
 	el.onclick = function () {
-		elClickHandler(data.user_uuid);		  	  
+		elClickHandler(data.user_uuid);
 	};
-			
+
   // make a marker for each feature and add to the map
   new mapboxgl.Marker(el)
     .setLngLat([data.lng, data.lat])
-    .addTo(map);  
+    .addTo(map);
+}
 
+function drawLineToFriend(user_uuid, oLat, oLng, friends) {
+  if (friends == null) return null;
+
+  var len = friends.length;
+  var routes = [];
+
+  for(var i=0;i<len;i++) {
+    if (friends[i].user_uuid == user_uuid) continue;
+
+    var nData = friends[i];
+    var tLat, tLng;
+    if (isSet(nData.lat) && isSet(nData.lng)) {
+      tLat = nData.lat;
+      tLng = nData.lng;
+    }
+    else {
+      tLat = oLat + generateRandomNumber();
+      tLng = oLng + generateRandomNumber();
+
+      nData['lat'] = tLat;
+      nData['lng'] = tLng;
+    }
+
+    addNodeToMap(nData);
+
+    var rt = {
+          "type": "Feature",
+          "geometry": {
+              "type": "LineString",
+              "coordinates": [[oLng, oLat], [tLng, tLat]]
+            }
+    };
+    routes.push(rt);
+  }
+
+  return routes;
+}
+
+function getNode(user_uuid) {
+  for(var i=0;i<len;i++) {
+    if (nodeNodeList[i].user_uuid == user_uuid) {
+      return nodeNodeList[i];
+    }
+  }
+
+  return null;
 }
 
 function elClickHandler(user_uuid) {
-			if (isClicked(user_uuid)) return;
-			
-			mapNodeClick.push(user_uuid);
-			
-			var len = mapNodeList.length;
-			
-			var routes = [];
-			for(var i=0;i<len;i++) {
-				if (mapNodeList[i].user_uuid == user_uuid) {
-					var friends = mapNodeList[i].friends;
-					if (friends == null) return;
-					
-					var flen = friends.length;
-					for(var ii=0;ii<flen;ii++) {
-						if (friends[ii].user_uuid == user_uuid) continue;
-												
-						var nData = friends[ii];
-						var tLat, tLng;
-						if (isSet(nData.lat) && isSet(nData.lng)) {
-							tLat = nData.lat;
-							tLng = nData.lng;
-						}
-						else {
-							tLat = tempLat + generateRandomNumber();
-							tLng = tempLng + generateRandomNumber();
-							
-							nData['lat'] = tLat;
-							nData['lng'] = tLng;
-						}
-												
-						addNodeToMap(nData);
-						
-						var rt = {
-                  "type": "Feature",
-                  "geometry": {
-                      "type": "LineString",
-                      "coordinates": [[tempLng, tempLat], [tLng, tLat]]
-                    }
-            };
-						routes.push(rt);
-					}
-				}
-			}
-			
-			if (routes.length <= 0) return;
-			
+      var node = getNode(user_uuid);
+			if (node == null) {
+        realRequestNode(node.user_nickname, elClickHandler);
+        return;
+      }
+
+      var routes = drawLineToFriend(node.user_uuid, node.lat, node.lng, node.friends);
+			if (routes == null || routes.length <= 0) return;
+
 			var route = {
               "type": "FeatureCollection",
               "features": routes
       };
-		
+
 			map.addSource('route' + cNodeCount, {
           "type": "geojson",
           "data": route
       });
-      
+
       map.addLayer({
           "id": 'route_' + cNodeCount,
           "source": 'route' + cNodeCount,
@@ -418,29 +398,40 @@ function elClickHandler(user_uuid) {
             "line-width": 2,
             "line-color": "#007cbf"
           }
-      });  
-      
-      cNodeCount++;          
+      });
+
+      cNodeCount++;
 }
 
-function addNode(data) {	
-	tempLat = data.lat; tempLng = data.lng;
-	addNodeToMap(data);	
+function addNode(data, callback) {
+  if (getNode(data.user_uuid) == null)
+    nodeNodeList.push(data);
+
+  addNodeToMap(data);
+
+  if (callback == null) return;
+
+  callback(data.user_uuid);
 }
 
 function requestNode() {
   showLoader();
-  var token = getCookie("user_token");
-  var emailid = getCookie("dev_user_id");
+
   var node_nickname = $('#node_nickname').val();
 
+  realRequestNode(node_nickname, null);
+}
+
+function realRequestNode(node_nickname, callback) {
   if (node_nickname == "") {
-	   alert("사용자의 이름을 입력해 주세요");
+	   alert("사용자의 닉네임이 잘 못 되었습니다");
      hideLoader();
 	   return;
   }
 
-  
+  var token = getCookie("user_token");
+  var emailid = getCookie("dev_user_id");
+
   var jdata = {"daction": "admin_get_node",
     "node_nickname" : node_nickname,
     "emailid" : emailid,
@@ -449,9 +440,9 @@ function requestNode() {
   };
 
   ajaxRequest(jdata, function (r) {
-    if(r.result == "success") {      
+    if(r.result == "success") {
       $('#node_nickname').val("");
-      addNode(r.data);
+      addNode(r.data, callback);
       hideLoader();
     }else {
       hideLoader();
@@ -462,6 +453,7 @@ function requestNode() {
     alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
   });
 }
+
 function initAdmin() {
   onlyConnectedNetworkOnMap();
 }
