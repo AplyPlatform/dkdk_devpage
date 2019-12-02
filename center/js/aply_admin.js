@@ -316,22 +316,30 @@ function addNodeToMap(data) {
 	
 	if (isSet(data.lat) == false || isSet(data.lng) == false) return;
 	
-	var el;
-					
+	var el = document.createElement('div');
+	var container = document.createElement("span");
+        var textel;
+        var ap;
 	if (isSet(data.imageData) == false) {
-		el = document.createElement('div');
-  		el.className = 'marker';  	
-		el.title = data.user_nickname;		
+		ap = document.createElement('div');
+  		ap.className = 'marker';  	
+		ap.title = data.user_nickname;
+		textel = document.createTextNode(data.user_nickname);
 	}
   else {
   	var srcImg = "data:image/jpeg;base64,";
 		srcImg += data.imageData;
-  		el = document.createElement('img');
-  		el.className = 'markerImage';
-		el.src = srcImg;
-		el.alt = data.user_nickname;		
+  		ap = document.createElement('img');
+  		ap.className = 'markerImage';
+		ap.src = srcImg;
+		ap.setAttribute('alt', data.user_nickname);
+		textel = document.createTextNode(data.user_nickname);
 	}
 	
+        container.style.color = "red";
+	container.appendChild(textel);
+	el.appendChild(container);
+	el.appendChild(ap);
 	el.width = el.height = "60";
 	el.setAttribute("id", "div_" + data.user_uuid);
 	el.onclick = function () {
