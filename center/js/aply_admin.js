@@ -410,19 +410,19 @@ function addNode(data, callback) {
     tempLng = 126.8491235 + generateRandomNumber();
     data.lat = tempLat;
     data.lng = tempLng;
+  }
 
-    if (data.friends != null) {
-      var len = data.friends.length;
-      for(var i=0;i<len;i++) {
-        var mNode = getNodeOnMap(data.friends[i].user_uuid);
-        if (mNode != null) {
-          data.friends[i].lat = mNode.lat;
-          data.friends[i].lng = mNode.lng;
-        }
-        else {
-          data.friends[i].lat = 37.5650168 + generateRandomNumber();
-          data.friends[i].lng = 126.8491235 + generateRandomNumber();
-        }
+  if (data.friends != null) {
+    var len = data.friends.length;
+    for(var i=0;i<len;i++) {
+      var mNode = getNodeOnMap(data.friends[i].user_uuid);
+      if (mNode != null && isSet(mNode.lat) && isSet(mNode.lng)) {
+        data.friends[i].lat = mNode.lat;
+        data.friends[i].lng = mNode.lng;
+      }
+      else {
+        data.friends[i].lat = 37.5650168 + generateRandomNumber();
+        data.friends[i].lng = 126.8491235 + generateRandomNumber();
       }
     }
   }
