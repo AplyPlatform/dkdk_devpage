@@ -320,14 +320,16 @@ function addNodeToMap(data) {
 					
 	if (isSet(data.imageData) == false) {
 		el = document.createElement('div');
-  	el.className = 'marker';  	
+  		el.className = 'marker';  	
+		el.title = data.user_nickname;		
 	}
   else {
   	var srcImg = "data:image/jpeg;base64,";
 		srcImg += data.imageData;
-  	el = document.createElement('img');
-  	el.className = 'markerImage';
-		el.src = srcImg;		
+  		el = document.createElement('img');
+  		el.className = 'markerImage';
+		el.src = srcImg;
+		el.alt = data.user_nickname;		
 	}
 	
 	el.width = el.height = "60";
