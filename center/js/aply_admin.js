@@ -126,7 +126,6 @@ function onlyConnectedNetworkOnMap()
 	  var edata = currentNetworkData;
 
 	  if (edata == null) {
-	  	alert("Empty");
 	  	hideLoader();
 	  	return;
 	  }
