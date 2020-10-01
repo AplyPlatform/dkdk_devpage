@@ -1,5 +1,5 @@
 ---
-title: DKDK Open API Reference
+title: DKDK Internal API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
@@ -39,9 +39,10 @@ Open API를 사용하는 첫번째 예제 입니다.
 Open API를 사용하는 두번째 예제 입니다.
 친구가 스마트폰의 두근두근을 터치할 경우 내가 만든 장치에서 두근거림을 받을 수 있습니다.
 
+
 # Token 발급 받기
 
-> Open API 의 사용을 위해 DKDK 개발자 Token을 발급 받으세요.
+> API의 사용을 위해 DKDK Token을 발급 받기 위한 방법입니다.
 
 
 ```shell
@@ -63,33 +64,385 @@ Open API를 사용하는 두번째 예제 입니다.
 
 >
 
-DKDK Open API는 DKDK 개발자 Token을 파라메터로 입력해야 사용하실 수 있습니다.
-아래 경로에서 먼저 개발자Token을 발급 받으세요.
+사용자 등록/로그인 API를 제외한 모든 API는 사용자 Token을 http 헤더의 파라메터로 입력해야 사용할 수 있습니다.
+순서는 다음과 같습니다.
+
+1. 사용자가 로그인시 사용한 OAuth 서비스 종류, 서비스로 부터 받은 토큰, Push 전송용 디바이스 토큰, 닉네임 정보를 포함하여 사용자 등록 API호출
+2. 잠시후 사용자 토큰이 포함된 푸시 메시지 수신 (푸시 메시지 Decoding 방법은 하기의 푸시 메시지 항목 참조)
+3. 사용자 토큰을 별도로 저장 (로그아웃, 탈퇴시 삭제)
+
+또는,
+
+1. 로그인 API호출
+2. 호출한 API 응답에 사용자 토큰 포함, 획득
+
+또는, 아래 경로에서 개발자Token을 발급 받으세요.
 
 [DKDK 개발자Token 발급](https://dev.dkdk.io/).
 
-발급받은 Token의 사용방법은 각 Open API의 설명을 참고해 주세요.
-
-<aside class="notice">
-DKDK Open API를 사용하시려면 반드시 <code>Token</code>을 API의 파라메터로 입력해야 합니다. 간수에 유의해 주세요.
-</aside>
+Token의 사용방법은 각 API의 설명을 참고해 주세요.
 
 
-# 사용자 검색/차단/해제
+# 사용자 등록/로그인/자동로그인/로그아웃/탈퇴
 
-## 사용자 검색하기
+## 사용자 등록
 
 ```shell
 
-curl -H "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"action":"find_friend", "user_uuid" : "MY_UUID", "friend_nickname" : "FRIEND_NICKNAME"}' https://api.dkdk.io/v2/dkdk
+curl -H "Content-type: application/json" -X POST -d '{"action":"register_v1", "deviceid" : "DEVICE_PUSH_TOKEN", "device_kind" : "DEVICE_KIND", "user_nickname":"USER_NICKNAME", "sns_kind" : "SNS_KIND", "sns_token" : "SNS_TOKEN", "language" : "LANGUAGE", "version" : "VERSION"}' https://api.dkdk.io/v2/dkdk
 
 ```
 
 ```php
 
-$body['action'] = 'find_friend';
-$body['user_uuid'] = 'MY_UUID';
-$body['friend_nickname'] = 'FRIEND_NICKNAME';
+$body['action'] = 'register_v1';
+$body['deviceid'] = 'DEVICE_PUSH_TOKEN';
+$body['device_kind'] = 'DEVICE_KIND';
+$body['user_nickname'] = 'USER_NICKNAME';
+$body['sns_kind'] = 'SNS_KIND';
+$body['sns_token'] = "SNS_TOKEN";
+$body['language'] = "LANGUAGE";
+$body['version'] = "VERSION";
+
+$headers = array(
+        'Content-Type: application/json'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+
+```
+
+```javascript
+
+var jdata = {"action":"register_v1", "deviceid" : "DEVICE_PUSH_TOKEN", "device_kind" : "DEVICE_KIND", "user_nickname":"USER_NICKNAME", "sns_kind" : "SNS_KIND", "sns_token" : "SNS_TOKEN", "language" : "LANGUAGE", "version" : "VERSION"};
+
+$.ajax({url : "https://api.dkdk.io/v2/dkdk",
+       dataType : "json",
+       contentType : "application/json",
+       crossDomain: true,
+       cache : false,
+       data : JSON.stringify(jdata),
+       type : "POST",
+       async: false,
+       success : function(r) {
+         console.log(JSON.stringify(r));
+         if(r.result == "success") {
+           alert("Successfully, recorded.");
+         }
+       },
+       error:function(request,status,error){
+           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       }
+});
+
+```
+
+```python
+
+import requests
+headers = {
+    'Content-Type': 'application/json'
+}
+data = {
+    "action":"register_v1", "deviceid" : "DEVICE_PUSH_TOKEN", "device_kind" : "DEVICE_KIND", "user_nickname":"USER_NICKNAME", "sns_kind" : "SNS_KIND", "sns_token" : "SNS_TOKEN", "language" : "LANGUAGE", "version" : "VERSION"
+}
+url = 'https://api.dkdk.io/v2/dkdk'
+response = requests.post(url, headers=headers,
+                         data=json.dumps(data))
+response.raise_for_status()
+'response.json()
+
+```
+
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
+
+```json
+
+  //성공
+  {
+    "result": "success",
+    "user_uuid" : "blah_blah_user_id",
+    "default_patterns" : [
+      {
+        "pattern_uuid" : "pattern_uuid-1",
+        "name" : "happy",
+        "pattern" : [10,100,10,100,10,100],
+        "image_idx" : 8,
+        "bpm" : 80
+      }
+    ]
+  }
+
+  //실패 - 이미 사용중인 닉네임일때
+  {
+    "result": "failed",
+    "reason" : "exist nickname"
+  }
+
+  //실패 - 이미 등록한 사용자일때
+  {
+    "result": "failed",
+    "reason" : "already registered"
+  }
+```
+
+사용자를 등록합니다
+
+### HTTP 요청
+
+`POST https://api.dkdk.io/v2/dkdk`
+
+### URL 파라메터
+
+파라메터 | 설명
+--------- | -----------
+action | 'register_v1'를 입력합니다.
+deviceid | 푸시전송시 사용하는 토큰
+device_kind | 디바이스의 종류 (하기 디바이스 종류 테이블 참조)
+user_nickname | 사용자가 입력한 닉네임
+sns_kind | 사용자가 SNS Auth 로그인한 SNS의 종류 (하기 SNS 종류 테이블 참조)
+sns_token | SNS Auth 로그인 후에 받은 (Google/Apple : IdToken, Facebook/Kakao/Naver : ACCESS_TOKEN)
+language | 사용자 디바이스의 언어값 (ISO 639 aplha-2 또는 aplha-3 코드 - 한국어: ko, 영어: en, 일어: ja, ...)
+version | 앱의 버전 (android에서의 VERSION_CODE와 동일값)
+
+#### 'device_kind'값 참조를 위한 디바이스 종류 테이블
+
+디바이스 | 값
+--------- | -----------
+iOS디바이스 | ios
+안드로이드 | android
+갤럭시 기어 | gear
+HTTP서버 | http
+웹소켓서버 | socket
+
+#### 'sns_kind'값 참조를 위한 SNS 종류 테이블
+
+SNS | 값
+--------- | -----------
+페이스북 | facebook
+구글 | google
+네이버 | naver
+카카오 | kakao
+애플 | apple
+애플 firebase | apple_firebase
+
+
+
+
+
+## 로그인
+
+```shell
+
+curl -H "Content-type: application/json" -X POST -d '{"action":"login", "deviceid" : "DEVICE_PUSH_TOKEN", "sns_kind" : "SNS_KIND", "sns_token" : "SNS_TOKEN", "version" : "VERSION"}' https://api.dkdk.io/v2/dkdk
+
+```
+
+```php
+
+$body['action'] = 'login';
+$body['deviceid'] = 'DEVICE_PUSH_TOKEN';
+$body['sns_kind'] = 'SNS_KIND';
+$body['sns_token'] = "SNS_TOKEN";
+$body['version'] = "VERSION";
+
+$headers = array(
+        'Content-Type: application/json'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+
+```
+
+```javascript
+
+var jdata = {"action":"login", "deviceid" : "DEVICE_PUSH_TOKEN", "sns_kind" : "SNS_KIND", "sns_token" : "SNS_TOKEN", "version" : "VERSION"};
+
+$.ajax({url : "https://api.dkdk.io/v2/dkdk",
+       dataType : "json",
+       contentType : "application/json",
+       crossDomain: true,
+       cache : false,
+       data : JSON.stringify(jdata),
+       type : "POST",
+       async: false,
+       success : function(r) {
+         console.log(JSON.stringify(r));
+         if(r.result == "success") {
+           alert("Successfully, recorded.");
+         }
+       },
+       error:function(request,status,error){
+           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       }
+});
+
+```
+
+```python
+
+import requests
+headers = {
+    'Content-Type': 'application/json'
+}
+data = {
+    "action":"login", "deviceid" : "DEVICE_PUSH_TOKEN", "sns_kind" : "SNS_KIND", "sns_token" : "SNS_TOKEN", "version" : "VERSION"
+}
+url = 'https://api.dkdk.io/v2/dkdk'
+response = requests.post(url, headers=headers,
+                         data=json.dumps(data))
+response.raise_for_status()
+'response.json()
+
+```
+
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
+
+```json
+
+  //성공
+  {
+    "result": "success",
+    "user_uuid" : "blah_blah_user_id",
+    "user_nickname" : "blah_blah_user_nickname",
+    "dkdk_token" : "dkdk_token",
+    "imageData" : "BASE64_ENCODED_IMAGE",
+    "patterns" : [
+      {
+        "pattern_uuid" : "pattern_uuid-1",
+        "name" : "happy",
+        "pattern" : [10,100,10,100,10,100],
+        "image_idx" : 8,
+        "bpm" : 80
+      },
+      {
+        "pattern_uuid" : "pattern_uuid-2",
+        "name" : "sad",
+        "pattern" : [10,80,10,100,10,100],
+        "image_idx" : 8,
+        "bpm" : 80
+      }
+    ],
+    "denylist" : [
+        {
+          "user_uuid" : "friend_uuid-1",
+          "user_nickname" : "friend_nickname-1"
+        },
+        {
+          "user_uuid" : "friend_uuid-2",
+          "user_nickname" : "friend_nickname-2"
+        }
+    ],
+    "friends" : [
+        {
+          "user_uuid" : "friend_uuid-1",
+          "user_nickname" : "friend_nickname-1",
+          "imageData" : "BASE64_ENCODED_IMAGE",
+          "target" : true,
+          "shareloc" : true //AR위치 전송 대상 여부
+        },
+        {
+          "user_uuid" : "friend_uuid-2",
+          "user_nickname" : "friend_nickname-2",
+          "imageData" : "BASE64_ENCODED_IMAGE",
+          "target" : false,
+          "shareloc" : true
+        }
+    ],
+    "friend_requests" : [
+        {
+          "user_uuid" : "friend_uuid-1",
+          "user_nickname" : "friend_nickname-1",
+          "created" : "1234123412341" //Timestamp
+        },
+        {
+          "user_uuid" : "friend_uuid-2",
+          "user_nickname" : "friend_nickname-2",
+          "created" : "1234123412342" //Timestamp
+        }
+    ],
+    ""
+  }
+
+  //실패 - 가입되지 않은 사용자 일때
+  {
+    "result": "failed",
+    "reason" : "not registered"
+  }
+
+  //실패 - 기타 이유
+  {
+    "result": "failed",
+    "reason" : "some reason"
+  }
+```
+
+SNS Auth 정보로 로그인합니다.
+
+### HTTP 요청
+
+`POST https://api.dkdk.io/v2/dkdk`
+
+### URL 파라메터
+
+파라메터 | 설명
+--------- | -----------
+action | 'login'를 입력합니다.
+deviceid | 푸시전송시 사용하는 토큰
+sns_kind | 사용자의 Auth 로그인 SNS 종류 (하기 SNS 종류 테이블 참조)
+sns_token | 사용자의 Auth 로그인 후에 받은 토큰 (Google/Apple: IdToken, Facebook/Kakao/Naver : ACCESS_TOKEN)
+version | 앱의 버전 (android에서의 VERSION_CODE와 동일값)
+
+#### 'sns_kind'값 참조를 위한 SNS 종류 테이블
+
+SNS | 값
+--------- | -----------
+페이스북 | facebook
+구글 | google
+네이버 | naver
+카카오 | kakao
+애플 | apple
+
+
+## 자동 로그인
+
+```shell
+
+curl "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"action":"autologin", "deviceid" : "DEVICE_PUSH_TOKEN", "user_uuid" : "USER_UUID", "version" : "VERSION", "imageData" : "BASE64_ENCODED_IMAGE"}' https://api.dkdk.io/v2/dkdk
+
+```
+
+```php
+
+$body['action'] = 'autologin';
+$body['deviceid'] = 'DEVICE_PUSH_TOKEN';
+$body['user_uuid'] = 'USER_UUID';
+$body['version'] = "VERSION";
+$body['imageData'] = "BASE64_ENCODED_IMAGE";
 
 $headers = array(
         'Content-Type: application/json',
@@ -114,7 +467,360 @@ echo $response;
 
 ```javascript
 
-var jdata = {"action": "find_friend", "user_uuid" : "MY_UUID", "friend_nickname" : "FRIEND_NICKNAME"};
+var jdata = {"action":"autologin", "deviceid" : "DEVICE_PUSH_TOKEN", "user_uuid" : "USER_UUID", "version" : "VERSION", "imageData" : "BASE64_ENCODED_IMAGE"};
+
+$.ajax({url : "https://api.dkdk.io/v2/dkdk",
+       dataType : "json",
+       contentType : "application/json",
+       crossDomain: true,
+       cache : false,
+       data : JSON.stringify(jdata),
+       type : "POST",
+       async: false,
+       beforeSend: function(request) {
+          request.setRequestHeader("dkdk-token", "DKDKTOKEN");
+        },
+       success : function(r) {
+         console.log(JSON.stringify(r));
+         if(r.result == "success") {
+           alert("Successfully, recorded.");
+         }
+       },
+       error:function(request,status,error){
+           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       }
+});
+
+```
+
+```python
+
+import requests
+headers = {
+    'Content-Type': 'application/json',
+    'dkdk-token': 'DKDKTOKEN'
+}
+data = {
+    "action":"autologin", "deviceid" : "DEVICE_PUSH_TOKEN", "user_uuid" : "USER_UUID", "version" : "VERSION", "imageData" : "BASE64_ENCODED_IMAGE"
+}
+url = 'https://api.dkdk.io/v2/dkdk'
+response = requests.post(url, headers=headers,
+                         data=json.dumps(data))
+response.raise_for_status()
+'response.json()
+
+```
+
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
+
+```json
+
+  //성공
+  {
+    "result": "success",
+    "user_uuid" : "blah_blah_user_id",
+    "user_nickname" : "blah_blah_user_nickname",
+    "dkdk_token" : "dkdk_token",
+    "imageData" : "BASE64_ENCODED_IMAGE"
+  }
+
+  //실패 - 가입되지 않은 사용자 일때
+  {
+    "result": "failed",
+    "reason" : "not registered"
+  }
+
+  //실패 - 기타 이유
+  {
+    "result": "failed",
+    "reason" : "some reason"
+  }
+```
+
+기존 로그인시 저장했던 정보로 자동 로그인합니다.
+
+### HTTP 요청
+
+`POST https://api.dkdk.io/v2/dkdk`
+
+### URL 파라메터
+
+파라메터 | 설명
+--------- | -----------
+dkdk-token | 사용자 Token 값을 헤더에 입력합니다.
+action | 'autologin'를 입력합니다.
+deviceid | 푸시전송시 사용하는 토큰
+user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
+version | 앱 또는 디바이스의 버전 (android에서는 VERSION_CODE값)
+imageData | base64 로 인코딩된 사용자 이미지
+
+
+## 로그아웃
+
+```shell
+
+curl "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"action":"logout", "user_uuid" : "USER_UUID"}' https://api.dkdk.io/v2/dkdk
+
+```
+
+```php
+
+$body['action'] = 'logout';
+$body['user_uuid'] = 'USER_UUID';
+
+$headers = array(
+        'Content-Type: application/json',
+        'dkdk-token: DKDKTOKEN'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+
+```
+
+```javascript
+
+var jdata = {"action":"logout", "user_uuid" : "USER_UUID"};
+
+$.ajax({url : "https://api.dkdk.io/v2/dkdk",
+       dataType : "json",
+       contentType : "application/json",
+       crossDomain: true,
+       cache : false,
+       data : JSON.stringify(jdata),
+       type : "POST",
+       async: false,
+       beforeSend: function(request) {
+          request.setRequestHeader("dkdk-token", "DKDKTOKEN");
+        },
+       success : function(r) {
+         console.log(JSON.stringify(r));
+         if(r.result == "success") {
+           alert("Successfully, recorded.");
+         }
+       },
+       error:function(request,status,error){
+           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       }
+});
+
+```
+
+```python
+
+import requests
+headers = {
+    'Content-Type': 'application/json',
+    'dkdk-token': 'DKDKTOKEN'
+}
+data = {
+    "action":"logout", "user_uuid" : "USER_UUID"
+}
+url = 'https://api.dkdk.io/v2/dkdk'
+response = requests.post(url, headers=headers,
+                         data=json.dumps(data))
+response.raise_for_status()
+'response.json()
+
+```
+
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
+
+```json
+
+  //성공
+  {
+    "result": "success"
+  }
+
+  //실패 - 기타 이유
+  {
+    "result": "failed",
+    "reason" : "some reason"
+  }
+```
+
+로그아웃 합니다.
+
+### HTTP 요청
+
+`POST https://api.dkdk.io/v2/dkdk`
+
+### URL 파라메터
+
+파라메터 | 설명
+--------- | -----------
+dkdk-token | 사용자 Token 값을 헤더에 입력합니다.
+action | 'logout'를 입력합니다.
+user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
+
+
+
+
+## 탈퇴하기
+
+```shell
+
+curl "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"action":"leave", "user_uuid" : "USER_UUID", "user_nickname" : "USER_NICKNAME"}' https://api.dkdk.io/v2/dkdk
+
+```
+
+```php
+
+$body['action'] = 'leave';
+$body['user_uuid'] = 'USER_UUID';
+$body['user_nickname'] = 'USER_NICKNAME';
+
+$headers = array(
+        'Content-Type: application/json',
+        'dkdk-token: DKDKTOKEN'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+
+```
+
+```javascript
+
+var jdata = {"action":"leave", "user_uuid" : "USER_UUID", "user_nickname" : "USER_NICKNAME"};
+
+$.ajax({url : "https://api.dkdk.io/v2/dkdk",
+       dataType : "json",
+       contentType : "application/json",
+       crossDomain: true,
+       cache : false,
+       data : JSON.stringify(jdata),
+       type : "POST",
+       async: false,
+       beforeSend: function(request) {
+          request.setRequestHeader("dkdk-token", "DKDKTOKEN");
+        },
+       success : function(r) {
+         console.log(JSON.stringify(r));
+         if(r.result == "success") {
+           alert("Successfully, recorded.");
+         }
+       },
+       error:function(request,status,error){
+           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       }
+});
+
+```
+
+```python
+
+import requests
+headers = {
+    'Content-Type': 'application/json',
+    'dkdk-token': 'DKDKTOKEN'
+}
+data = {
+    "action":"leave", "user_uuid" : "USER_UUID", "user_nickname" : "USER_NICKNAME"
+}
+url = 'https://api.dkdk.io/v2/dkdk'
+response = requests.post(url, headers=headers,
+                         data=json.dumps(data))
+response.raise_for_status()
+'response.json()
+
+```
+
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
+
+```json
+
+  //성공
+  {
+    "result": "success"
+  }
+
+  //실패 - 기타 이유
+  {
+    "result": "failed",
+    "reason" : "some reason"
+  }
+```
+
+탈퇴를 진행 합니다.
+
+### HTTP 요청
+
+`POST https://api.dkdk.io/v2/dkdk`
+
+### URL 파라메터
+
+파라메터 | 설명
+--------- | -----------
+dkdk-token | 사용자 Token 값을 헤더에 입력합니다.
+action | 'leave'를 입력합니다.
+user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
+user_nickname | 사용자의 닉네임을 입력합니다.
+
+
+# 친구 요청/수락/헤어지기 [DEPRECATED]
+
+## 친구 요청하기 [DEPRECATED]
+
+```shell
+
+curl -H "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"action":"request", "user_uuid" : "MY_UUID", "friend_nickname" : "FRIEND_NICKNAME"}' https://api.dkdk.io/v2/dkdk
+
+```
+
+```php
+
+$body['action'] = 'request';
+$body['user_uuid'] = 'MY_UUID';
+$body['friend_nickname'] = "FRIEND_NICKNAME";
+
+$headers = array(
+        'Content-Type: application/json',
+        'dkdk-token: DKDKTOKEN'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+
+```
+
+```javascript
+
+var jdata = {"action": "request", "user_uuid" : "MY_UUID", "friend_nickname" : "FRIEND_NICKNAME"};
 
 $.ajax({url : "https://api.dkdk.io/v2/dkdk",
        dataType : "json",
@@ -148,9 +854,9 @@ headers = {
     'dkdk-token' : 'DKDKTOKEN'
 }
 data = {
-    'action': 'find_friend',
-    'user_uuid' : 'USER_UUID',
-    'friend_nickname' : 'FRIEND_NICKNAME'
+    'action': 'request',
+    'user_uuid' : 'USER_UUID'
+    'friend_nickname' : "FRIEND_NICKNAME"
 }
 url = 'https://api.dkdk.io/v2/dkdk'
 response = requests.post(url, headers=headers,
@@ -160,40 +866,15 @@ response.raise_for_status()
 
 ```
 
-> 상기의 API는 아래와 같이 JSON 구조로 응답합니다:
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
-    "result": "success",
-    "user_uuid" : "FRIEND_UUID",
-    "imageData" : "BASE64_ENCODED_IMAGE" //(이미지가 있을 경우)
-  }
-
-  //친구가 없을 경우
-  {
-    "result": "failed",
-    "reason" : "no user"
-  }
-
-  //daction 에 'more' 파라메터 입력시 응답 (최대 5개 항목 응답)
-  {
-    "result": "success",
-    "data" : [
-      {
-        "user_uuid" : "FRIEND_UUID",
-        "user_nickname" : "FRIEND_NICKNAME",
-        "imageData" : "BASE64_ENCODED_IMAGE" //(이미지가 있을 경우)
-      },
-      {
-        "user_uuid" : "FRIEND_UUID_2",
-        "user_nickname" : "FRIEND_NICKNAME_2",
-        "imageData" : "BASE64_ENCODED_IMAGE" //(이미지가 있을 경우)
-      }
-    ]
+    "result": "success"
   }
 ```
 
-닉네임으로 사용자를 검색합니다.
+친구를 등록합니다.
 
 ### HTTP 요청
 
@@ -205,25 +886,135 @@ response.raise_for_status()
 --------- | -----------
 dkdk-token | 사용자 Token 값을 헤더에 입력합니다.
 user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
-action | 'find_friend'를 입력합니다.
-friend_nickname | 검색할 사용자의 닉네임을 입력합니다.
-daction | 이 파라메터에 'more'를 입력할 경우, friend_nickname 에 입력한 문구가 포함되어 있는 닉네임을 가진 모든 사용자 목록을 배열로 응답합니다(옵션)
+action | 'request'를 입력합니다.
+friend_nickname | 친구로 요청할 대상의 닉네임 값을 입력합니다.
 
 
-## 차단 목록에 추가
+## 친구요청 수락하기 [DEPRECATED]
+
 
 ```shell
 
-curl -H "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"action":"add_to_deny", "user_uuid" : "MY_UUID", "target_user_uuid" : "USER_UUID", "target_user_nickname" : "USER_NICKNAME"}' https://api.dkdk.io/v2/dkdk
+curl -H "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"user_uuid":"USER_UUID", "action":"accept", "friend_uuid" : "FRIEND_UUID"}' https://api.dkdk.io/v2/dkdk
 
 ```
 
 ```php
 
-$body['action'] = 'add_to_deny';
-$body['user_uuid'] = 'MY_UUID';
-$body['target_user_uuid'] = "USER_UUID";
-$body['target_user_nickname'] = "USER_NICKNAME";
+$body['action'] = 'accept';
+$body['user_uuid'] = 'USER_UUID';
+$body['friend_uuid'] = 'FRIEND_UUID';
+
+$headers = array(
+        'Content-Type: application/json',
+        'dkdk-token: DKDKTOKEN'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+```
+
+```javascript
+
+
+var jdata = {"action": "accept", "user_uuid" : "USER_UUID", "friend_uuid" : "FRIEND_UUID" };
+
+$.ajax({url : "https://api.dkdk.io/v2/dkdk",
+       dataType : "json",
+       contentType : "application/json",
+       crossDomain: true,
+       cache : false,
+       data : JSON.stringify(jdata),
+       type : "POST",
+       async: false,
+       beforeSend: function(request) {
+          request.setRequestHeader("dkdk-token", "DKDKTOKEN");
+        },
+       success : function(r) {
+         console.log(JSON.stringify(r));
+         if(r.result == "success") {
+           //r.data
+         }
+       },
+       error:function(request,status,error){
+           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       }
+});
+
+```
+
+```python
+
+import requests
+headers = {
+    'Content-Type': 'application/json',
+    'dkdk-token' : 'DKDKTOKEN'
+}
+data = {
+    'action': 'accept',
+    'user_uuid' : 'USER_UUID'
+    'friend_uuid' : 'FRIEND_UUID'
+}
+url = 'https://api.dkdk.io/v2/dkdk'
+response = requests.post(url, headers=headers,
+                         data=json.dumps(data))
+response.raise_for_status()
+'response.json()
+
+
+```
+> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
+
+```json
+{
+  "result" : "success",
+  "friend_uuid" : "FRIEND_UUID",
+  "imageData" : "BASE64_ENCODED_IMAGE"
+}
+
+```
+
+친구요청을 수락합니다.
+
+### HTTP 요청
+
+`POST https://api.dkdk.io/v2/dkdk`
+
+### URL 파라메터
+
+파라메터 | 설명
+--------- | -----------
+dkdk-token | 사용자 Token 값을 헤더에 입력합니다.
+action | 'accept'를 입력합니다.
+user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
+friend_uuid | 친구요청 전송에 성공했을때 수신한 friend_uuid를 입력합니다.
+
+
+
+## 친구와 헤어지기 [DEPRECATED]
+
+```shell
+
+curl -H "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"user_uuid":"USER_UUID", "action":"bye", "friend_uuid" : "FRIEND_UUID"' https://api.dkdk.io/v2/dkdk
+
+```
+
+```php
+
+$body['action'] = 'bye';
+$body['user_uuid'] = 'USER_UUID';
+$body['friend_uuid'] = "FRIEND_UUID";
 
 $headers = array(
         'Content-Type: application/json',
@@ -248,7 +1039,7 @@ echo $response;
 
 ```javascript
 
-var jdata = {"action": "add_to_deny", "user_uuid" : "MY_UUID", "target_user_uuid" : "USER_UUID", "target_user_nickname" : "USER_NICKNAME"};
+var jdata = {"action": "bye", "user_uuid" : "USER_UUID", "friend_uuid" : "FRIEND_UUID"};
 
 $.ajax({url : "https://api.dkdk.io/v2/dkdk",
        dataType : "json",
@@ -264,7 +1055,7 @@ $.ajax({url : "https://api.dkdk.io/v2/dkdk",
        success : function(r) {
          console.log(JSON.stringify(r));
          if(r.result == "success") {
-           alert("Successfully, added.");
+           //r.data;
          }
        },
        error:function(request,status,error){
@@ -282,11 +1073,11 @@ headers = {
     'dkdk-token' : 'DKDKTOKEN'
 }
 data = {
-    'action': 'add_to_deny',
-    'user_uuid' : 'MY_UUID',
-    'target_user_uuid' : "USER_UUID",
-    'target_user_nickname' : "USER_NICKNAME"
+    'action': 'bye',
+    'user_uuid' : 'USER_UUID'
+    "friend_uuid" : "FRIEND_UUID"
 }
+
 url = 'https://api.dkdk.io/v2/dkdk'
 response = requests.post(url, headers=headers,
                          data=json.dumps(data))
@@ -295,7 +1086,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 API는 아래와 같이 JSON 구조로 응답합니다:
+> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -303,7 +1094,7 @@ response.raise_for_status()
   }
 ```
 
-사용자를 차단목록에 추가합니다.
+친구목록에서 삭제 요청을 전송합니다.
 
 ### HTTP 요청
 
@@ -315,116 +1106,8 @@ response.raise_for_status()
 --------- | -----------
 dkdk-token | 사용자 Token 값을 헤더에 입력합니다.
 user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
-action | 'add_to_deny'를 입력합니다.
-target_user_uuid | 차단할 사용자의 user_uuid 값을 입력합니다.
-target_user_nickname | 차단할 사용자의 닉네임 값을 입력합니다.
-
-
-## 차단 목록에서 삭제
-
-```shell
-
-curl -H "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"action":"remove_from_deny", "user_uuid" : "MY_UUID", "target_user_uuid" : "USER_UUID"}' https://api.dkdk.io/v2/dkdk
-
-```
-
-```php
-
-$body['action'] = 'remove_from_deny';
-$body['user_uuid'] = 'MY_UUID';
-$body['target_user_uuid'] = "USER_UUID";
-
-$headers = array(
-        'Content-Type: application/json',
-        'dkdk-token: DKDKTOKEN'
-);
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
-curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
-curl_setopt($ch, CURLOPT_POST,    true);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
-$response = curl_exec($ch);
-//$json_list= json_decode($response, true);
-curl_close($ch);
-
-echo $response;
-
-
-```
-
-```javascript
-
-var jdata = {"action": "remove_from_deny", "user_uuid" : "MY_UUID", "target_user_uuid" : "USER_UUID"};
-
-$.ajax({url : "https://api.dkdk.io/v2/dkdk",
-       dataType : "json",
-       contentType : "application/json",
-       crossDomain: true,
-       cache : false,
-       data : JSON.stringify(jdata),
-       type : "POST",
-       async: false,
-       beforeSend: function(request) {
-          request.setRequestHeader("dkdk-token", "DKDKTOKEN");
-        },
-       success : function(r) {
-         console.log(JSON.stringify(r));
-         if(r.result == "success") {
-           alert("Successfully, added.");
-         }
-       },
-       error:function(request,status,error){
-           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-       }
-});
-
-```
-
-```python
-
-import requests
-headers = {
-    'Content-Type': 'application/json',
-    'dkdk-token' : 'DKDKTOKEN'
-}
-data = {
-    'action': 'remove_from_deny',
-    'user_uuid' : 'MY_UUID',
-    'target_user_uuid' : "USER_UUID"
-}
-url = 'https://api.dkdk.io/v2/dkdk'
-response = requests.post(url, headers=headers,
-                         data=json.dumps(data))
-response.raise_for_status()
-'response.json()
-
-```
-
-> 상기의 API는 아래와 같이 JSON 구조로 응답합니다:
-
-```json
-  {
-    "result": "success"
-  }
-```
-
-차단 목록에서 사용자를 삭제합니다.
-
-### HTTP 요청
-
-`POST https://api.dkdk.io/v2/dkdk`
-
-### URL 파라메터
-
-파라메터 | 설명
---------- | -----------
-dkdk-token | 사용자 Token 값을 헤더에 입력합니다.
-user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
-action | 'remove_from_deny'를 입력합니다.
-target_user_uuid | 차단 해제 할 사용자의 user_uuid 값을 입력합니다.
+action | 'bye'를 입력합니다.
+friend_uuid | 친구요청 전송에 성공했을때 수신한 friend_uuid 값을 입력합니다.
 
 
 
@@ -513,7 +1196,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 API는 아래와 같이 JSON 구조로 응답합니다:
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -730,7 +1413,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 API는 아래와 같이 JSON 구조로 응답합니다:
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -837,7 +1520,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 API는 아래와 같이 JSON 구조로 응답합니다:
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -943,7 +1626,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 API는 아래와 같이 JSON 구조로 응답합니다:
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -1050,7 +1733,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 API는 아래와 같이 JSON 구조로 응답합니다:
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -1075,7 +1758,375 @@ friend_uuid | AR위치를 보낼 친구의 user_uuid 값을 입력합니다.
 shareloc | 보낼 대상으로 선택하면 true, 그렇지 않으면 false를 입력합니다.
 
 
+
+
+# 사용자 검색/차단/해제
+
+## 사용자 검색하기
+
+```shell
+
+curl -H "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"action":"find_friend", "user_uuid" : "MY_UUID", "friend_nickname" : "FRIEND_NICKNAME"}' https://api.dkdk.io/v2/dkdk
+
+```
+
+```php
+
+$body['action'] = 'find_friend';
+$body['user_uuid'] = 'MY_UUID';
+$body['friend_nickname'] = 'FRIEND_NICKNAME';
+
+$headers = array(
+        'Content-Type: application/json',
+        'dkdk-token: DKDKTOKEN'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+
+```
+
+```javascript
+
+var jdata = {"action": "find_friend", "user_uuid" : "MY_UUID", "friend_nickname" : "FRIEND_NICKNAME"};
+
+$.ajax({url : "https://api.dkdk.io/v2/dkdk",
+       dataType : "json",
+       contentType : "application/json",
+       crossDomain: true,
+       cache : false,
+       data : JSON.stringify(jdata),
+       type : "POST",
+       async: false,
+       beforeSend: function(request) {
+          request.setRequestHeader("dkdk-token", "DKDKTOKEN");
+        },
+       success : function(r) {
+         console.log(JSON.stringify(r));
+         if(r.result == "success") {
+           alert("Successfully, recorded.");
+         }
+       },
+       error:function(request,status,error){
+           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       }
+});
+
+```
+
+```python
+
+import requests
+headers = {
+    'Content-Type': 'application/json',
+    'dkdk-token' : 'DKDKTOKEN'
+}
+data = {
+    'action': 'find_friend',
+    'user_uuid' : 'USER_UUID',
+    'friend_nickname' : 'FRIEND_NICKNAME'
+}
+url = 'https://api.dkdk.io/v2/dkdk'
+response = requests.post(url, headers=headers,
+                         data=json.dumps(data))
+response.raise_for_status()
+'response.json()
+
+```
+
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
+
+```json
+  {
+    "result": "success",
+    "user_uuid" : "FRIEND_UUID",
+    "imageData" : "BASE64_ENCODED_IMAGE" //(이미지가 있을 경우)
+  }
+
+  //친구가 없을 경우
+  {
+    "result": "failed",
+    "reason" : "no user"
+  }
+
+  //daction 에 'more' 파라메터 입력시 응답 (최대 5개 항목 응답)
+  {
+    "result": "success",
+    "data" : [
+      {
+        "user_uuid" : "FRIEND_UUID",
+        "user_nickname" : "FRIEND_NICKNAME",
+        "imageData" : "BASE64_ENCODED_IMAGE" //(이미지가 있을 경우)
+      },
+      {
+        "user_uuid" : "FRIEND_UUID_2",
+        "user_nickname" : "FRIEND_NICKNAME_2",
+        "imageData" : "BASE64_ENCODED_IMAGE" //(이미지가 있을 경우)
+      }
+    ]
+  }
+```
+
+닉네임으로 사용자를 검색합니다.
+
+### HTTP 요청
+
+`POST https://api.dkdk.io/v2/dkdk`
+
+### URL 파라메터
+
+파라메터 | 설명
+--------- | -----------
+dkdk-token | 사용자 Token 값을 헤더에 입력합니다.
+user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
+action | 'find_friend'를 입력합니다.
+friend_nickname | 검색할 사용자의 닉네임을 입력합니다.
+daction | 이 파라메터에 'more'를 입력할 경우, friend_nickname 에 입력한 문구가 포함되어 있는 닉네임을 가진 모든 사용자 목록을 배열로 응답합니다(옵션)
+
+
+## 차단 목록에 추가
+
+```shell
+
+curl -H "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"action":"add_to_deny", "user_uuid" : "MY_UUID", "target_user_uuid" : "USER_UUID", "target_user_nickname" : "USER_NICKNAME"}' https://api.dkdk.io/v2/dkdk
+
+```
+
+```php
+
+$body['action'] = 'add_to_deny';
+$body['user_uuid'] = 'MY_UUID';
+$body['target_user_uuid'] = "USER_UUID";
+$body['target_user_nickname'] = "USER_NICKNAME";
+
+$headers = array(
+        'Content-Type: application/json',
+        'dkdk-token: DKDKTOKEN'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+
+```
+
+```javascript
+
+var jdata = {"action": "add_to_deny", "user_uuid" : "MY_UUID", "target_user_uuid" : "USER_UUID", "target_user_nickname" : "USER_NICKNAME"};
+
+$.ajax({url : "https://api.dkdk.io/v2/dkdk",
+       dataType : "json",
+       contentType : "application/json",
+       crossDomain: true,
+       cache : false,
+       data : JSON.stringify(jdata),
+       type : "POST",
+       async: false,
+       beforeSend: function(request) {
+          request.setRequestHeader("dkdk-token", "DKDKTOKEN");
+        },
+       success : function(r) {
+         console.log(JSON.stringify(r));
+         if(r.result == "success") {
+           alert("Successfully, added.");
+         }
+       },
+       error:function(request,status,error){
+           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       }
+});
+
+```
+
+```python
+
+import requests
+headers = {
+    'Content-Type': 'application/json',
+    'dkdk-token' : 'DKDKTOKEN'
+}
+data = {
+    'action': 'add_to_deny',
+    'user_uuid' : 'MY_UUID',
+    'target_user_uuid' : "USER_UUID",
+    'target_user_nickname' : "USER_NICKNAME"
+}
+url = 'https://api.dkdk.io/v2/dkdk'
+response = requests.post(url, headers=headers,
+                         data=json.dumps(data))
+response.raise_for_status()
+'response.json()
+
+```
+
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
+
+```json
+  {
+    "result": "success"
+  }
+```
+
+사용자를 차단목록에 추가합니다.
+
+### HTTP 요청
+
+`POST https://api.dkdk.io/v2/dkdk`
+
+### URL 파라메터
+
+파라메터 | 설명
+--------- | -----------
+dkdk-token | 사용자 Token 값을 헤더에 입력합니다.
+user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
+action | 'add_to_deny'를 입력합니다.
+target_user_uuid | 차단할 사용자의 user_uuid 값을 입력합니다.
+target_user_nickname | 차단할 사용자의 닉네임 값을 입력합니다.
+
+
+## 차단 목록에서 삭제
+
+```shell
+
+curl -H "dkdk-token: DKDKTOKEN" -H "Content-type: application/json" -X POST -d '{"action":"remove_from_deny", "user_uuid" : "MY_UUID", "target_user_uuid" : "USER_UUID"}' https://api.dkdk.io/v2/dkdk
+
+```
+
+```php
+
+$body['action'] = 'remove_from_deny';
+$body['user_uuid'] = 'MY_UUID';
+$body['target_user_uuid'] = "USER_UUID";
+
+$headers = array(
+        'Content-Type: application/json',
+        'dkdk-token: DKDKTOKEN'
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://api.dkdk.io/v2/dkdk');
+curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+curl_setopt($ch, CURLOPT_POST,    true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($body));
+$response = curl_exec($ch);
+//$json_list= json_decode($response, true);
+curl_close($ch);
+
+echo $response;
+
+
+```
+
+```javascript
+
+var jdata = {"action": "remove_from_deny", "user_uuid" : "MY_UUID", "target_user_uuid" : "USER_UUID"};
+
+$.ajax({url : "https://api.dkdk.io/v2/dkdk",
+       dataType : "json",
+       contentType : "application/json",
+       crossDomain: true,
+       cache : false,
+       data : JSON.stringify(jdata),
+       type : "POST",
+       async: false,
+       beforeSend: function(request) {
+          request.setRequestHeader("dkdk-token", "DKDKTOKEN");
+        },
+       success : function(r) {
+         console.log(JSON.stringify(r));
+         if(r.result == "success") {
+           alert("Successfully, added.");
+         }
+       },
+       error:function(request,status,error){
+           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+       }
+});
+
+```
+
+```python
+
+import requests
+headers = {
+    'Content-Type': 'application/json',
+    'dkdk-token' : 'DKDKTOKEN'
+}
+data = {
+    'action': 'remove_from_deny',
+    'user_uuid' : 'MY_UUID',
+    'target_user_uuid' : "USER_UUID"
+}
+url = 'https://api.dkdk.io/v2/dkdk'
+response = requests.post(url, headers=headers,
+                         data=json.dumps(data))
+response.raise_for_status()
+'response.json()
+
+```
+
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
+
+```json
+  {
+    "result": "success"
+  }
+```
+
+차단 목록에서 사용자를 삭제합니다.
+
+### HTTP 요청
+
+`POST https://api.dkdk.io/v2/dkdk`
+
+### URL 파라메터
+
+파라메터 | 설명
+--------- | -----------
+dkdk-token | 사용자 Token 값을 헤더에 입력합니다.
+user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
+action | 'remove_from_deny'를 입력합니다.
+target_user_uuid | 차단 해제 할 사용자의 user_uuid 값을 입력합니다.
+
+
+
 #두근거림 보내고 받기
+
+## 소켓 접속 정보
+서버 소켓에 접속하면 Push를 통해 받게 되는 (이벤트)정보를 소켓을 통해 받을 수 있게 됩니다.
+만약 소켓 연결이 해제될 경우, Push를 통해 (이벤트)정보를 받을 수 있습니다.
+이에, 하트를 주고/받는 화면에 진입하면 소켓에 접속하고 해당 화면을 빠져 나올 경우 소켓 접속을 해제해 주세요.  
+
+접속 URL : wss://drp326sta1.execute-api.ap-northeast-2.amazonaws.com/prod
+
+헤더 파라메터 | 설명
+--------- | -----------
+dkdk-token | 사용자 Token 값을 헤더에 입력합니다.
+user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
+
 
 ## 두근거림 보내기
 
@@ -1172,7 +2223,7 @@ response.raise_for_status()
   }
 ```
 
-(소켓연결이 되어 있지 않을 경우) 친구에게 나의 두근거림을 전송합니다.
+(소켓연결이 되어 있지 않을 경우)친구에게 나의 두근거림을 전송합니다.
 
 ### HTTP 요청
 
@@ -1916,7 +2967,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 API는 아래와 같이 JSON 구조로 응답합니다:
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
 {
@@ -2033,7 +3084,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 API는 아래와 같이 JSON 구조로 응답합니다:
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -2137,7 +3188,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 API는 아래와 같이 JSON 구조로 응답합니다:
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -2245,7 +3296,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 API는 아래와 같이 JSON 구조로 응답합니다:
+> 상기의 API는 요청에 성공했을 경우 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -2413,18 +3464,6 @@ time | 두근거림을 보내거나 받은 시각
 
 
 #웹소켓을 통해 신호 보내기
-
-## 소켓 접속 정보
-서버 소켓에 접속하면 Push를 통해 받게 되는 (이벤트)정보를 소켓을 통해 받을 수 있게 됩니다.
-만약 소켓 연결이 해제될 경우, Push를 통해 (이벤트)정보를 받을 수 있습니다.
-이에, 하트를 주고/받는 화면에 진입하면 소켓에 접속하고 해당 화면을 빠져 나올 경우 소켓 접속을 해제 해주세요.  
-
-접속 URL : wss://socketinterface.dkdk.io/v2
-
-헤더 파라메터 | 설명
---------- | -----------
-dkdk-token | 사용자 Token 값을 헤더에 입력합니다.
-user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
 
 ## 웹소켓 접속하기
 
