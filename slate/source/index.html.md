@@ -1,5 +1,5 @@
 ---
-title: DKDK Internal API Reference
+title: DKDK OPEN API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
@@ -2118,7 +2118,7 @@ target_user_uuid | 차단 해제 할 사용자의 user_uuid 값을 입력합니�
 ## 소켓 접속 정보
 서버 소켓에 접속하면 Push를 통해 받게 되는 (이벤트)정보를 소켓을 통해 받을 수 있게 됩니다.
 만약 소켓 연결이 해제될 경우, Push를 통해 (이벤트)정보를 받을 수 있습니다.
-이에, 하트를 주고/받는 화면에 진입하면 소켓에 접속하고 해당 화면을 빠져 나올 경우 소켓 접속을 해제해 주세요.  
+이에, Heart를 주고/받는 화면에 진입하면 소켓에 접속하고 해당 화면을 빠져 나올 경우 소켓 접속을 해제해 주세요.  
 
 접속 URL : wss://drp326sta1.execute-api.ap-northeast-2.amazonaws.com/prod
 
@@ -3325,7 +3325,7 @@ imageData | base64 로 인코딩된 사용자 이미지
 
 
 
-## 주고받은 두근거림(하트)수 받아오기
+## 주고받은 두근거림(Heart)수 받아오기
 
 ```shell
 
@@ -3437,7 +3437,7 @@ response.raise_for_status()
 }
 ```
 
-나의 친구가 주고받은 두근거림(하트)의 수를 확인합니다.
+나의 친구가 주고받은 두근거림(Heart)의 수를 확인합니다.
 
 ### HTTP 요청
 
@@ -3463,7 +3463,7 @@ count | 두근거림 수
 time | 두근거림을 보내거나 받은 시각
 
 
-#웹소켓을 통해 신호 보내기
+#웹소켓을 통해 이벤트 보내기
 
 ## 웹소켓 접속하기
 
@@ -3497,15 +3497,16 @@ Connected (press CTRL+C to quit)
 {"action": "sendMessage", "user_uuid":"USER_UUID", "user_nickname" : "USER_NICKNAME", "doaction":"heart", "friend_uuids":["FRIEND_UUID1"], "pattern_uuid":"PATTERN_UUID", "friend_shareloc_uuids" : ["FRIEND_UUID1", "FRIEND_UUID2"], "lat" : 123.1341, "lng" : 36.134, "alt" : 12.33}
 ```
 
-웹소켓 서버로 heart 시그널을 전송합니다.
-(하트를 주고 받는 애니메이션의 간격을 5초로 설정합니다. 나의 하트가 5초후에 상대에게 도달할때마다 이 API를 호출합니다.
-마찬가지로, 하트를 수신하고 있는 상대방은 약 10초 간격으로 이 하트의 수신여부를 확인하고 만약 10초동안 수신한 기록이 없다면 상대로 부터 'up' 신호를 받은 것으로 간주하고 처리합니다.)
+웹소켓 서버로 heart이벤트를 전송합니다.
+(heart를 주고 받는 애니메이션의 간격을 5초로 설정합니다. 나의 heart가 5초후에 상대에게 도달할때마다 이 API를 호출합니다.
+마찬가지로, heart를 수신하고 있는 상대방은 약 10초 간격으로 수신여부를 확인하고 만약 10초동안 수신한 기록이 없다면 상대로 부터 'up' 이벤트를 받은 것으로 간주하고 처리합니다.)
 
 ### 헤더 파라메터
 
 파라메터 | 설명
 --------- | -----------
 user_uuid | 사용자 등록 후 부여받는 user_uuid 값을 입력합니다.
+action | 'sendMessage'를 입력합니다.
 doaction | 'heart'를 입력합니다.
 user_nickname | 사용자 닉네임을 입력합니다 (Optional)
 friend_uuids | 친구의 user_uuid를 입력합니다. (Array)
@@ -3516,7 +3517,7 @@ lng | Longitude 좌표를 입력합니다 (double)
 alt | 고도(Altitude) 값을 입력합니다 (double)
 
 
-#친구 요청/터치/터치업/heart 신호받기
+#친구 요청/터치/터치업/heart 이벤트받기
 
 ## 친구요청 받기 [DEPRECATED]
 
@@ -3581,7 +3582,7 @@ curdate | 친구요청 송신 시각
 
 
 
-## 하트터치 신호받기
+## Heart터치 이벤트받기
 
 ```http
 
@@ -3626,9 +3627,9 @@ Connection: close
 
 ```
 
-친구가 하트를 터치하면 이 신호를 받습니다.
+친구가 Heart를 터치하면 이 이벤트를 받습니다.
 
-### 하트터치 수신 데이터 (ANDROID, iOS)
+### Heart터치 수신 데이터 (ANDROID, iOS)
 
 파라메터 | 설명
 --------- | -----------
@@ -3637,9 +3638,9 @@ mfrom | 친구의 user_uuid
 mid | 친구의 닉네임
 muuid | 친구의 user_uuid
 pattern_uuid | 친구의 패턴 UUID
-curdate | 하트터치 송신 시각
+curdate | Heart터치 송신 시각
 
-### 하트터치 수신 데이터 (TIZEN, HTTP SERVER)
+### Heart터치 수신 데이터 (TIZEN, HTTP SERVER)
 
 파라메터 | 설명
 --------- | -----------
@@ -3647,10 +3648,10 @@ state | 'touch'
 from | 친구의 닉네임
 fromid | 친구의 user_uuid
 pattern_uuid | 친구의 패턴 uuid
-curdate | 하트터치 송신 시각
+curdate | Heart터치 송신 시각
 
 
-## 하트터치업 신호받기
+## Heart터치업 이벤트받기
 
 ```http
 
@@ -3692,27 +3693,27 @@ Connection: close
 
 ```
 
-친구가 터치중인 하트에서 손을 떼면 이 신호를 받습니다.
+친구가 터치중인 Heart에서 손을 떼면 이 이벤트를 받습니다.
 
-### 하트터치업 수신 데이터 (ANDROID, iOS)
+### Heart터치업 수신 데이터 (ANDROID, iOS)
 
 파라메터 | 설명
 --------- | -----------
 mstate | 'up'
 mfrom | 터치부터 터치업까지의 두근거림 수
 muuid | 친구의 user_uuid
-curdate | 신호 송신 시각
+curdate | 이벤트 송신 시각
 
-### 하트터치업 수신 데이터 (TIZEN, HTTP SERVER)
+### Heart터치업 수신 데이터 (TIZEN, HTTP SERVER)
 
 파라메터 | 설명
 --------- | -----------
 state | 'up'
 from | 터치부터 터치업까지의 두근거림 수
 fromid | 친구의 user_uuid
-curdate | 신호 송신 시각
+curdate | 이벤트 송신 시각
 
-## heart 신호받기
+## heart 이벤트받기
 
 ```http
 
@@ -3766,7 +3767,7 @@ Connection: close
 
 ```
 
-친구가 하트를 터치하는 동안 이 신호를 받습니다.
+친구가 Heart를 터치하는 동안 이 이벤트를 받습니다.
 
 ### heart 수신 데이터 (ANDROID, iOS)
 
@@ -3839,7 +3840,7 @@ alt | 고도(Altitude) 값을 입력합니다 (double)
   {
     "state":"request",
     "fromid":"FRIEND_UUID",
-    "mfrom":50, //수신한 전체 하트의 수
+    "mfrom":50, //수신한 전체 Heart의 수
     "curdate":"2014-03-01 15:00:00"
   }
 
@@ -3879,7 +3880,7 @@ alt | 고도(Altitude) 값을 입력합니다 (double)
     "mstate":"up",
     "muuid":"USER_UUID",
     "mid":"USER_NICKNAME",
-    "mfrom":50, //수신한 전체 하트의 수
+    "mfrom":50, //수신한 전체 Heart의 수
     "curdate":"2014-03-01 15:00:00"
   }
 
@@ -3887,7 +3888,7 @@ alt | 고도(Altitude) 값을 입력합니다 (double)
   {
     "state":"secret",
     "fromid":"USER_UUID",
-    "mfrom":50, //수신한 전체 하트의 수
+    "mfrom":50, //수신한 전체 Heart의 수
     "curdate":"2014-03-01 15:00:00"
   }
 
