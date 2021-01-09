@@ -15,7 +15,7 @@ toc_footers:
   - <a href='https://facebook.com/dkdkheart'>DKDK 페이스북</a>
   - <a href='https://dkdk.io/'>DKDK 홈</a>
   - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
-  - © 2020 <a href='https://aply.biz'>APLY Inc.</a>
+  - © <script>var cYear=(new Date()).getFullYear();document.write(cYear);</script> <a href='https://aply.biz'>APLY Inc.</a>
 includes:
   - errors
 
