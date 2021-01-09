@@ -628,7 +628,7 @@ response.raise_for_status()
 
 
 ```
-> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
+> 이 요청은 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
 {
@@ -740,7 +740,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
+> 이 요청은 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -959,7 +959,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
+> 이 요청은 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -1515,7 +1515,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
+> 이 요청은 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -1627,7 +1627,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
+> 이 요청은 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -1745,7 +1745,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
+> 이 요청은 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -1875,7 +1875,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
+> 이 요청은 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -2026,7 +2026,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
+> 이 요청은 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -2134,7 +2134,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
+> 이 요청은 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
   {
@@ -2709,7 +2709,7 @@ response.raise_for_status()
 
 ```
 
-> 상기의 명령은 아래와 같이 JSON 구조로 응답합니다:
+> 이 요청은 아래와 같이 JSON 구조로 응답합니다:
 
 ```json
 {
